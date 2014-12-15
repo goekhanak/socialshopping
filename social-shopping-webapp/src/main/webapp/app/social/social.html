@@ -1,4 +1,4 @@
-<div class="full-size" ng-controller="SocialController as social">
+<div class="full-size" ng-controller="SocialController as ctrl">
 
     <div class="row">
         <!--Suggestion panel-->
@@ -8,22 +8,54 @@
 
         <!--Rate Articles-->
         <div class="col-lg-6">
-            Rate Articles
+            Participants
+            <li ng-repeat="participant in ctrl.participants">{{ participant|json }}</li>
+
+            Messages
+            <li ng-repeat="message in ctrl.messages">{{ message|json }}</li>
         </div>
 
         <!--Chat-->
         <div class="col-lg-3">
-            <h1>Chat</h1>
 
-            <li ng-repeat="message in social.messages">{{ message|json }}</li>
+            <!--Show the images of logged in users-->
+            <div class="participants">
+                <!--<div ng-repeat="participant in ctrl.participants" class="participant">-->
+                    <img ng-repeat="participant in ctrl.participants" ng-src="{{participant.profilePicture}}" width="40" title="{{participant.displayName}}">
+                        <!--<span class=".divider-small"/></span>-->
+                        <!--<div class="delimiter"></div>-->
+                    </img>
+                    <div class="delimiter"></div>
+                    <!--<span class=".divider-small"/></span>-->
+                <!--</div>-->
+            </div>
 
-            <input type="text"
-                   class="form-control"
-                   data-ng-model="social.newMessage"
-                   ng-keypress="social.onMessageKeyPress($event)"
-                   placeholder="Send Message"
-                    />
-        </div>
+            <div class="messages">
+                <div ng-repeat="message in ctrl.messages" class="message">
+                    <h4>
+                        <img ng-src="{{message.userImg}}" width="20"/>{{message.content}}
+                    </h4>
+                    <span>{{message.postedBy}}
+                      <small class="text-muted">{{message.postedDate | date:'yyyy-MM-dd HH:mm:ss'}}</small>
+                    </span>
+                </div>
+                <div class="message" ng-show="!ctrl.messages">
+                    <h4>Loading Please wait</h4>
+                </div>
+                <div class="message" ng-show="ctrl.messages && ctrl.messages.length == 0">
+                    <h4>No message yet!</h4>
+                </div>
+            </div>
+
+            <!--<div class="chat-input">-->
+                <input type="text"
+                       class="form-control"
+                       data-ng-model="ctrl.newMessage"
+                       ng-keypress="ctrl.onMessageKeyPress($event)"
+                       placeholder="Send Message"
+                        />
+            </div>
+        <!--</div>-->
     </div>
 
 

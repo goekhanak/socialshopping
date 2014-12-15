@@ -40195,7 +40195,7 @@
         "entries": [
             {
                 "key": "shop.expressDelivery.featureSwitch",
-                "value": "\"DISABLED\"",
+                "value": "\"ENABLED_ALL\"",
                 "isEncrypted": false,
                 "applicationContext": {
                     "appDomainId": 1
@@ -46208,7 +46208,7 @@
             },
             {
                 "key": "AppDomain.paymentMethods",
-                "value": "[\"CASH_ON_DELIVERY\",\"PTF\",\"PAYPAL\",\"CREDITCARD\"]",
+                "value": "[\"CASH_ON_DELIVERY\",\"PTF\",\"PAYPAL\",\"CREDITCARD\",\"PREPAYMENT\"]",
                 "isEncrypted": false,
                 "applicationContext": {
                     "appDomainId": 24
@@ -98633,7 +98633,7 @@
             },
             {
                 "key": "solr.access.masterUrl",
-                "value": "\"http://z-devsn02.zalando:38800/solr\"",
+                "value": "\"http://restsn03.zalando:38800/solr\"",
                 "isEncrypted": false,
                 "applicationContext": {},
                 "appInstanceContext": {}
@@ -100004,6 +100004,18 @@
             {
                 "key": "shop.updater.upstream.queue.messagingHost",
                 "value": "\"z-devsn02.zalando\"",
+                "isEncrypted": false,
+                "applicationContext": {},
+                "appInstanceContext": {}
+            }
+        ]
+    },
+    {
+        "key": "shop.cookieservice.blowfishKey",
+        "entries": [
+            {
+                "key": "shop.cookieservice.blowfishKey",
+                "value": "\"urmdcwv7s4ybtv8f\"",
                 "isEncrypted": false,
                 "applicationContext": {},
                 "appInstanceContext": {}

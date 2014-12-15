@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>PET</title>
+    <title>Social Shopping</title>
 
     <link rel="stylesheet" href="../../webapp/styles/zalando-bootstrap.css?t=${buildTime}" th:href="\@{/styles/zalando-bootstrap.css?t=${buildTime}}"/>
     <link rel="stylesheet" href="../../webapp/styles/main.css?t=${buildTime}" th:href="\@{/styles/main.css?t=${buildTime}}"/>
@@ -15,7 +15,9 @@
         <header class="header main-header auto-size">
             <div class="col-layout center-horizontal">
                 <div></div>
-                <div class="auto-size main-header__email" data-ng-bind="currentUser.username"></div>
+                <div class="auto-size main-header__email"><img ng-src="{{currentUser.fbUser.profilePicture}}" alt="" height="25" width="30"/></div>
+                <div class="delimiter"></div>
+                <div class="auto-size main-header__email" data-ng-bind="currentUser.fbUser.displayName"></div>
                 <div class="delimiter"></div>
                 <div class="auto-size">
                     <a class="main-header__logout auto-size" th:href="@{/#/logout}"><i class="fa fa-power-off"></i></a>

@@ -16,6 +16,7 @@ define(['petCommonModule'], function (module) {
             $rootScope.requestedPath = '/';
 
             function init() {
+                $rootScope.currentFBUser = {};
                 $scope.lang = $translate.proposedLanguage();
                 $scope.changeLanguage = function changeLanguage(languageKey) {
                     $scope.lang = $translate.use(languageKey);
@@ -116,7 +117,8 @@ define(['petCommonModule'], function (module) {
                 $scope.currentUser = $scope.$load(UserService.get(), function (user) {
                     $scope.currentUser = {
                         'username': user.username,
-                        'permissions': user.authorities
+                        'permissions': user.authorities,
+                        'fbUser': $rootScope.currentFBUser
                     };
 
                     $scope.canUserEdit = false;
