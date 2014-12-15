@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: de.zalando.catalog:catalog-client-common:1.2.176">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/zalando/catalog/catalog-client-common/1.2.176/catalog-client-common-1.2.176.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/de/zalando/catalog/catalog-client-common/1.2.176/catalog-client-common-1.2.176-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/zalando/catalog/catalog-client-common/1.2.176/catalog-client-common-1.2.176-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,30 @@
+<div class="full-size" ng-controller="SocialController as social">
+
+    <div class="row">
+        <!--Suggestion panel-->
+        <div class="col-lg-3">
+            Suggestion panel
+        </div>
+
+        <!--Rate Articles-->
+        <div class="col-lg-6">
+            Rate Articles
+        </div>
+
+        <!--Chat-->
+        <div class="col-lg-3">
+            <h1>Chat</h1>
+
+            <li ng-repeat="message in social.messages">{{ message|json }}</li>
+
+            <input type="text"
+                   class="form-control"
+                   data-ng-model="social.newMessage"
+                   ng-keypress="social.onMessageKeyPress($event)"
+                   placeholder="Send Message"
+                    />
+        </div>
+    </div>
+
+
+</div>

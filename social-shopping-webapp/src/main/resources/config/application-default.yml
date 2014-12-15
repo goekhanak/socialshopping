@@ -1,0 +1,9 @@
+info:
+    build:
+        artifact: ${project.artifactId}
+        name: ${project.name}
+        description: ${project.description}
+        version: ${project.version}
+        buildTime: ${maven.build.timestamp}
+ehcache:
+    resourceFileName: ehcache.xml

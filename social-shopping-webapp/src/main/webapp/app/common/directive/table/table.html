@@ -1,0 +1,152 @@
+<div class="table__container row-layout" bindonce>
+    <div
+            ng-if="deleteable || addable"
+            class="table__actions auto-size">
+
+        <div
+                ng-if="deleteable"
+                class="btn btn-danger"
+                ng-click="onDelete(selected)"
+                ng-disabled="selected.length === 0">
+
+            <i class="fa fa-trash-o"></i> <span ng-bind="( buttonConfig.delete || 'DELETE' ) | translate"/>
+        </div>
+        <div
+                ng-if="addable"
+                class="btn btn-default"
+                ng-click="onAdd()">
+
+            <i class="fa fa-plus"></i> <span ng-bind="( buttonConfig.add || 'ADD' ) | translate"/>
+        </div>
+    </div>
+    <div class="table__head auto-size">
+        <table class="table">
+            <thead>
+            <tr class="table__head-title">
+                <th
+                        ng-if="selectable"
+                        class="table__column___xs table__head___checkmark">✓
+                </th>
+                <th
+                        ng-click="orderBy( $event, column.property, column.property === sort.field ? !sort.reverse : false )"
+                        ng-repeat="column in config">
+
+                        <span class="table__head___title">{{column.title | translate}}</span>
+
+                    <div class="table__head___filter row-layout">
+                        <i
+                                ng-class="{ 'active': column.property === sort.field && sort.reverse === false }"
+                                ng-click="orderBy( $event, column.property, false )"
+                                class="fa fa-caret-up"></i>
+                        <i
+                                ng-class="{ 'active': column.property === sort.field && sort.reverse === true }"
+                                ng-click="orderBy( $event, column.property, true )"
+                                class="fa fa-caret-down"></i>
+                    </div>
+                </th>
+            </tr>
+            <tr class="table__head-search">
+                <td ng-if="selectable" class="table__column___xs">
+                    <input
+                            type="checkbox"
+                            ng-checked="data.length === selected.length && data.length > 0"
+                            ng-click="toggleAll()"/>
+                </td>
+                <td
+                        bindonce="column"
+                        ng-repeat="column in config"
+                        class="table__head-search">
+
+                    <div
+                            bo-if="column.filter && column.type === 'string'"
+                            class="col-layout">
+
+                        <input
+                                type="search"
+                                ng-keyup="filterProperty( column.property, $event )"
+                                placeholder="{{ column.filter.placeholder | translate }}"
+                                ng-model="search[ column.property ]"/>
+
+                        <div
+                                ng-click="filterProperty( column.property )"
+                                class="btn btn-default auto-size">
+                            <i class="fa fa-filter"></i>
+                        </div>
+                    </div>
+
+                    <select
+                            bo-if="column.filter && column.type === 'bool'"
+                            ng-title="{{ column.filter.placeholder | translate }}"
+                            ng-model="search[ column.property ]">
+
+                        <option value="" translate="ALL"></option>
+                        <option value="true" translate="BOOLEAN_TRUE"></option>
+                        <option value="false" translate="BOOLEAN_FALSE"></option>
+
+                    </select>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div    id="infiniteScrollTable"
+            class="table__body">
+        <table
+                class="table">
+            <tbody
+                    infinite-scroll="onLoadMore()"
+                    infinite-scroll-container="'#infiniteScrollTable'"
+                    infinite-scroll-distance="0">
+            <tr
+                    class="table__row___sticky"
+                    bindonce="row"
+                    ng-repeat="row in selected | orderBy:sort.field:sort.reverse">
+                <td
+                        ng-if="selectable"
+                        class="table__column___xs">
+
+                    <input
+                            type="checkbox"
+                            ng-click="toggleSelection( $event, row )"
+                            ng-checked="isSelected( row )"/>
+                </td>
+                <td
+                        bindonce="column"
+                        ng-repeat="column in config">
+                    <span bo-if="column.type === 'string'" bo-bind="row | parse:column.property | formatter:column.formatterFilter"/>
+                    <span bo-if="column.type === 'bool'" bo-bind="row | parse:column.property | nicebool"/>
+                </td>
+
+            </tr>
+            <tr
+                    class="table__row"
+                    bindonce="row"
+                    ng-repeat="row in data | filter:filterSelected | orderBy:sort.field:sort.reverse"
+                    ng-click="selectRow( row )"
+                    ng-selected="selectedRow === row">
+
+                <td
+                        ng-if="selectable"
+                        class="table__column___xs">
+
+                    <input
+                            type="checkbox"
+                            ng-click="toggleSelection( $event, row )"
+                            ng-checked="isSelected( row )"/>
+                </td>
+                <td
+                        bindonce="column"
+                        ng-repeat="column in config">
+                    <span bo-if="column.type === 'string'" bo-bind="row | parse:column.property | formatter:column.formatterFilter"/>
+                    <span bo-if="column.type === 'bool'" bo-bind="row | parse:column.property | nicebool"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--<div class="table__load-more auto-size">-->
+        <!--<div-->
+                <!--ng-click="onLoadMore()"-->
+                <!--class="btn btn-default"><i class="fa fa-2x fa-download"></i></div>-->
+    <!--</div>-->
+</div>

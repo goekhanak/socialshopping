@@ -1,0 +1,117 @@
+<div class="table__container  row-layout col-lg-8 ">
+
+<div class="table__head auto-size ">
+    <table class="table">
+        <thead>
+        <tr class="table__head-title">
+            <th class="table__column___xs table__head___checkmark">✓</th>
+            <th translate="article.editForm.attributes.name"></th>
+            <th translate="article.editForm.attributes.values"></th>
+        </tr>
+        <tr class="table__head-search">
+            <td class="table__column___xs">
+              <!--enrichment column do we need any action here-->
+            </td>
+            <td>
+                <div class="col-layout" >
+                    <input
+                            type="search"
+                            ng-model="enrichment.attributeFilter.name"
+                            placeholder="Filter"/>
+                    <div
+                            ng-disabled="true"
+                            class="btn btn-default auto-size">
+                        <i class="fa fa-filter"></i>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="col-layout" />
+            </td>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="table__body background-white ">
+    <table class="table">
+        <tbody>
+        <tr
+                class="table__row"
+                bindonce="row"
+                ng-repeat="row in enrichment.currentAttrDefintions | filter: enrichment.attributeFilter |orderBy:['-required','name']"
+                ng-click="enrichment.selectedAttribute = enrichment.selectedAttribute === row  ? null : row;"
+                ng-selected="enrichment.selectedAttribute === row"
+                >
+
+            <td class="table__column___xs">
+                <i  ng-if="row.required === true" class="fa"
+                    ng-class="row.values.length > 0 ? 'fa-check success-icon-color' : 'fa-times error-icon-color'">
+                </i>
+            </td>
+
+            <td bo-bind="row.name"></td>
+            <td>
+                <span ng-repeat="value in row.values | orderBy:'displayName'" ng-init="value.displayName = value.displayNames[lang]">
+                <button class="btn btn-default btn-xs attributeValueButton" type="button" >
+                    {{value.displayName}}
+                </button>
+                <span class=".divider-small"/></span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+        <!--Options/Tags -->
+<!--currentArticleModel and config are different-->
+
+<div ng-if="enrichment.currentDisplayedArticle.inProduction === false" class="table__container listpicker__available row-layout col-lg-4">
+    <div class="table__head auto-size">
+        <table class="table">
+            <thead>
+            <tr class="table__head-title">
+                <th class="table__column___xs table__head___checkmark">✓</th>
+                <th translate="article.editForm.attributes.options"></th>
+            </tr>
+            <tr class="table__head-search">
+                <td class="table__column___xs">
+                    <input ng-if="enrichment.selectedAttribute && enrichment.selectedAttribute.multiselect === true" type="checkbox"  ng-change="enrichment.toggleAllOptions()" ng-model="enrichment.selectedAttribute.allOptionsChecked"/>
+                </td>
+                <td>
+                    <div class="col-layout">
+                        <input
+                                type="search"
+                                ng-model="enrichment.selectedAttribute.optionFilter.displayName"
+                                placeholder="Filter"/>
+                        <div
+                                ng-disabled="true"
+                                class="btn btn-default auto-size">
+                            <i class="fa fa-filter"></i>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="table__body background-white"
+         infinite-scroll-container>
+        <table
+                class="table">
+            <tbody>
+            <tr
+                    ng-click="enrichment.selectOption(option)"
+                    ng-init="option.displayName = option.displayNames[lang]"
+                    ng-repeat="option in enrichment.selectedAttribute.options | filter: enrichment.selectedAttribute.optionFilter | orderBy: 'displayName'">
+                <td class="table__column___xs">
+                    <input ng-disabled="!enrichment.optionSelectable(option)" type="checkbox" ng-checked="enrichment.isOptionSelected(option)"/>
+                </td>
+
+                <td>{{option.displayName}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

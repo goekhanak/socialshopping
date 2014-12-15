@@ -1,0 +1,167 @@
+<div class="auto-size catalogue-form__header has-spinner" ng-class="{active: enrichment.loadingArticle}">
+    <i ng-click="enrichment.unselectArticle()" class="fa fa-times catalogue-form__close pull-right"></i>
+    <button id="saveArticleButton" class="btn btn-primary" type="button"
+            ng-click="enrichment.saveArticle()"
+            ng-disabled="enrichment.isArticleSaveable() === false"
+            ng-show="enrichment.shouldSaveButtonBeVisible()">
+        <i class="fa fa-save"></i>
+        <span translate="article.editForm.save">Save</span>
+    </button>
+    <button id="submitArticleButton"
+            class="btn btn-primary"
+            type="button"
+            ng-click="enrichment.submitArticle()"
+            ng-disabled="enrichment.isArticleSubmitable() === false"
+            ng-show="enrichment.shouldSubmitButtonBeVisible()">
+        <i class="fa fa-arrow-circle-right"></i>
+        <span translate="article.editForm.submit">Submit</span>
+    </button>
+    <span class="divider"/></span>
+    <span class="label font-size-100-percent"
+          ng-show="enrichment.shouldInfoLabelBeVisible()">{{ enrichment.infoLabelTranslateKey() | translate }} </span>
+</div>
+<div class="catalogue-form__content form-horizontal">
+    <tabset class="row-layout tab-hide-disabled">
+        <tab select="enrichment.modelTabSelected()">
+            <tab-heading>
+                {{enrichment.currentArticle.modelSku}}
+                <i class="fa"
+                   ng-class="enrichment.tabIcon(enrichment.currentArticle)">
+                </i>
+            </tab-heading>
+            <!-- first row -->
+            <div class="container-fluid fill-parent">
+                <div class="row fill-parent">
+                    <div class="col-lg-4">
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label class="control-label pull-right" translate="article.articleName"></label>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text"
+                                       readonly
+                                       ng-model="enrichment.currentArticle.name"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label class="control-label pull-right" translate="article.supplierArticleNumber"></label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div readonly
+                                     class="form-control">{{enrichment.currentArticle.supplierArticleCode}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label class="control-label pull-right" translate="masterData.commodityGroup"></label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div readonly
+                                     class="form-control">{{enrichment.currentArticle.commodityGroupCode | commodityGroupDisplay}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-6">
+                                <label class="control-label pull-right" translate="article.productGroup"></label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="btn-group dropdown fill-parent">
+                                    <button type="button"
+                                            class="form-control dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            ng-disabled="enrichment.currentArticle.inProduction === true">
+                                        <div class="col-layout">
+                                            <div class="dropdown-display-value">{{enrichment.productGroupCode | productGroupDisplay}}</div>
+                                            <div ng-if="enrichment.currentArticle.inProduction === false"
+                                                 class="auto-size"><b class="caret"></b></div>
+                                        </div>
+                                    </button>
+                                    <ul class="dropdown-menu scroll"
+                                        role="menu">
+                                        <li bindonce="productGroup"
+                                            ng-repeat="productGroup in enrichment.masterData.productGroups">
+                                            <a ng-click="enrichment.selectProductGroup(productGroup.code.code)">{{productGroup.code.code | productGroupDisplay}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label  class="control-label pull-right" translate="article.silhouette"></label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="btn-group dropdown fill-parent">
+                                    <button class="form-control dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            ng-disabled="enrichment.currentArticle.inProduction === true">
+                                        <div class="col-layout">
+                                            <div class="dropdown-display-value">{{enrichment.currentArticle.silhouetteCode | silhouetteDisplay}}</div>
+                                            <div ng-if="enrichment.currentArticle.inProduction === false"
+                                                 class="auto-size"><b class="caret"></b></div>
+                                        </div>
+                                    </button>
+                                    <ul class="dropdown-menu scroll" role="menu">
+                                        <li bindonce="silhouetteCode"
+                                            ng-repeat="silhouetteCode in (enrichment.productGroupCode  | silhouetteCodesForProductGroupCode) ">
+                                            <a ng-click="enrichment.selectSilhouette(silhouetteCode)">{{silhouetteCode | silhouetteDisplay}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 fill-height">
+                        <div class="container-fluid fill-parent" ng-include="enrichment.editAttrs.template"></div>
+                    </div>
+                </div>
+            </div>
+
+        </tab>
+        <tab ng-repeat="config in enrichment.currentArticle.configs | orderBy:'inProduction' | slice:0:enrichment.MAX_CONFIG_TAB-1"
+             select="enrichment.configTabSelected(config)">
+            <tab-heading>
+                {{config | configTitleDisplay}}
+                <i class="fa"
+                   ng-class="enrichment.tabIcon(config)">
+                </i>
+            </tab-heading>
+            <div class="container-fluid fill-parent" ng-include="enrichment.editConfigForm.template"></div>
+        </tab>
+
+        <!--For those configs which can not be shown at normal tabs extra tab with dropdown -->
+        <tab select="enrichment.configTabSelected(enrichment.extraTabSelectedConfig)" ng-if="enrichment.currentArticle.configs.length > enrichment.MAX_CONFIG_TAB">
+            <tab-heading class="dropdown-tab">
+                <div class="dropdown btn-group fill-parent" >
+                    <button type="button" class="form-control dropdown-toggle"
+                            data-toggle="dropdown"
+                            ng-keypress="enrichment.onSearchFilterKeyPress($event)">
+                        <div class="col-layout">
+                            <div class="dropdown-display-value">{{enrichment.extraTabSelectedConfig | configTitleDisplay}}
+                                <i class="fa"
+                                   ng-class="enrichment.tabIcon(enrichment.extraTabSelectedConfig)">
+                                </i>
+                            </div>
+                            <div class="auto-size"><b class="caret"></b></div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu scroll min-height-180" role="menu">
+                        <li ng-repeat="config in enrichment.currentArticle.configs | orderBy:'inProduction' | slice:enrichment.MAX_CONFIG_TAB-1 :enrichment.currentArticle.configs.length+1">
+                            <a ng-click="enrichment.configTabSelected(config); enrichment.extraTabSelectedConfig = config;">
+                                {{config | configTitleDisplay}}
+                                <i class="fa"
+                                   ng-class="enrichment.tabIcon(config)">
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </tab-heading>
+            <div class="container-fluid fill-parent" ng-include="enrichment.editConfigForm.template"></div>
+        </tab>
+    </tabset>
+</div>

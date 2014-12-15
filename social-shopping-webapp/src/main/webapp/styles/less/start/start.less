@@ -1,0 +1,123 @@
+@import "../variables";
+@import "../own-variables";
+
+header.header {
+  background-color: @brand-primary;
+  height: @header-height !important;    // would be overwritten by super-specific layout specifier
+  padding: @padding-small-vertical @padding-small-horizontal;
+}
+
+aside.sidebar {
+  background-color: @gray-lightest;
+  overflow: visible;
+  transition: width linear @transition-duration-instant;
+  width: 200px;
+  &.ng-hide {
+    display: block !important;
+    width: 70px;
+  }
+}
+
+li > {
+  i.fa.fa-caret-down,
+  i.fa.fa-caret-right {
+    margin-right: .5em;
+  }
+}
+div.sidebar__catalogues {
+  > ul {
+    margin-left: -1.5em;
+  }
+}
+div.sidebar__applications {
+  ul {
+    margin-left: -2em;
+    list-style-type: none;
+    word-wrap: break-word;
+    &.sidebar__applications___applist {
+      margin-left: -1em;
+      list-style-type: square;
+    }
+  }
+  > ul {
+    margin-left: -3em;
+  }
+}
+
+img.start__brandimage {
+  width: 100%;
+}
+
+div.sidebar__search {
+  height: 25px;
+  display:flex;
+  overflow: visible;
+  margin: @padding-large-vertical @padding-large-horizontal;
+  input {
+    height: 100%;
+    width: 100%;
+  }
+  i.fa.sidebar__search-icon {
+    position: absolute;
+    right: 10px;
+    margin-top: 6px;
+    color: @gray-lighter;
+  }
+
+  ul.dropdown-menu {
+    position: absolute;
+    > li {
+      cursor: pointer;
+    }
+  }
+}
+
+.main-header, .main-header * {
+  overflow: visible;
+}
+
+.main-header__settings {
+  display: inline-block;
+  float: right;
+  i.fa {
+    color: white;
+    cursor: pointer;
+  }
+  .dropdown-menu {
+    left: auto;
+    right: 0;
+    width: 200px;
+    li.unselectable > span {
+      padding: 3px 20px;
+      cursor: default;
+      color: #8f8f8f;
+    }
+    li.dropdown-header span + span {
+      margin-left: 5px;
+    }
+  }
+}
+
+.main-header__logout {
+  color: white;
+  float:right;
+  cursor: pointer;
+  margin-left: @padding-large-horizontal;
+  &:hover {
+    color: white;
+  }
+}
+
+.main-header__email {
+  color: white;
+}
+
+div.sidebar__content {
+  overflow: auto;
+  padding: 0 @padding-large-horizontal;
+}
+
+.sidebar__hide {
+  cursor: pointer;
+  color: white;
+}

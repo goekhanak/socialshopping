@@ -1,0 +1,9 @@
+webService:
+    ArticleReadWebService.url     :  http://lb.patch.zalando.net:37001/ws/articleReadWebService?wsdl
+    AuthenticationWebService.url  :  http://lb.patch.zalando.net:39500/ws/authenticationService?wsdl
+    ConfigReadWebService.url      :  http://lb.patch.zalando.net:33600/ws/configReadWebService?wsdl
+    MasterDataReadWebService.url  :  http://lb.patch.zalando.net:37001/ws/masterDataReadWebService?wsdl
+    PoolWebService.url            :  http://lb.patch.zalando.net:35100/ws/poolWebService?wsdl
+    PurchasingWriteWebService.url :  http://lb.patch.zalando.net:37001/ws/purchasingWriteWebService?wsdl
+    PurchasingPetWebService.url   :  http://lb.patch.zalando.net:35100/ws/purchasingPetWebService?wsdl
+    TranslationReadWebService.url :  http://lb.patch.zalando.net:39305/ws/translationReadWebService?wsdl

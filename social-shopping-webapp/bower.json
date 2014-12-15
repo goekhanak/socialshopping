@@ -1,0 +1,44 @@
+{
+  "name": "pet",
+  "version": "0.0.0",
+  "appPath": "src/main/webapp/app",
+  "dependencies": {
+    "angular": "1.2.25",
+    "angular-cookies": "1.2.25",
+    "angular-resource": "1.2.25",
+    "angular-route": "1.2.25",
+    "angular-sanitize": "1.2.25",
+    "angular-animate": "1.2.25",
+    "angular-translate": "2.2.0",
+    "angular-translate-loader-static-files": "2.2.0",
+    "angular-translate-storage-cookie": "2.2.0",
+    "atmosphere": "2.1.2",
+    "jquery": "2.1.1",
+    "jquery-atmosphere": "2.1.2",
+    "json3": "3.3.0",
+    "angular-bootstrap": "0.11.2",
+    "font-awesome": "4.0.3",
+    "angular-ui-utils": "0.1.1",
+    "requirejs": "2.1.14",
+    "underscore": "1.6.0",
+    "angular-http-auth": "1.2.1",
+    "ngInfiniteScroll": "1.1.2",
+    "domReady": "2.0.1",
+    "angular-translate-storage-local": "2.2.0",
+    "swagger-ui": "2.0.18",
+    "angular-bootstrap-nav-tree": "*",
+    "angular-bindonce": "0.3.1",
+    "angular-ui-select": "0.7.0",
+    "lodash": "2.4.1",
+    "angular-loading-bar": "0.6.0",
+    "firebase": "2.0.6",
+    "angularfire": "0.9.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.25",
+    "angular-scenario": "1.2.25"
+  },
+  "resolutions": {
+    "angular": "1.2.25"
+  }
+}

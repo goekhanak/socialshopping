@@ -1,0 +1,15 @@
+<div class="input-group">
+    <input type="text"
+           class="form-control"
+           datepicker-popup="{{format}}"
+           ng-model="dt" is-open="opened"
+           min="minDate" max="'2015-06-22'"
+           datepicker-options="dateOptions"
+           date-disabled="disabled(date, mode)"
+           close-text="Close"
+           placeholder="{{placeholder}}"
+           show-button-bar="false"/>
+          <span class="input-group-btn">
+            <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+</div>

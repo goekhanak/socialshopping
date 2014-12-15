@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+
+    <property name="FLOW_ID_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %X{flowid} %5p %15.15t{14} %-40.40logger{39}: %m%n%wex"/>
+    <property name="LOG_DIR" value="/data/zalando/logs" scope="CONTEXT"/>
+    <!-- application.log -->
+    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FLOW_ID_LOG_PATTERN}</pattern>
+        </encoder>
+        <file>${LOG_DIR}/${jvm.process.name}/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR}/${jvm.process.name}/application.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- cxf.log -->
+    <appender name="fileAppenderCxf" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FLOW_ID_LOG_PATTERN}</pattern>
+        </encoder>
+        <file>${LOG_DIR}/${jvm.process.name}/cxf.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR}/${jvm.process.name}/cxf.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!--client-exception.log -->
+    <appender name="clientExceptionAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] [ %X{flowid} | %X{username} ] --- %-40.40logger{39} : %m%n%wex</pattern>
+        </encoder>
+        <file>${LOG_DIR}/${jvm.process.name}/client-exception.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR}/${jvm.process.name}/application-client-exception.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- keep 14 days' worth of history -->
+            <maxHistory>14</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 50MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!--exceptions.log -->
+    <appender name="exceptionMonitorLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="de.zalando.log.backend.layout.LogbackExceptionCsvLayout">
+                <param name="Host" value="${jvm.host.name}"/>
+                <param name="ProcessName" value="${jvm.process.name}"/>
+            </layout>
+        </encoder>
+        <file>${LOG_DIR}/${jvm.process.name}/log_database_${jvm.host.name}_${jvm.process.name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover every minute-->
+            <fileNamePattern>${LOG_DIR}/${jvm.process.name}/log_database_${jvm.host.name}_${jvm.process.name}.log.%d{yyyy-MM-dd_HH-mm}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="de.zalando" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="exceptionMonitorLogAppender"/>
+    </logger>
+
+    <logger name="de.zalando.purchase.pet.web.rest.exception" additivity="false">
+        <level value="FINE"/>
+        <appender-ref ref="clientExceptionAppender"/>
+    </logger>
+
+    <logger name="de.zalando.zomcat.cxf" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="fileAppenderCxf"/>
+    </logger>
+
+    <logger name="org.apache.cxf" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="fileAppenderCxf"/>
+    </logger>
+
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="com.codahale.metrics" level="WARN"/>
+    <logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="com.ryantenney" level="WARN"/>
+
+    <logger name="org.apache" level="WARN">
+        <appender-ref ref="fileAppender"/>
+    </logger>
+
+    <logger name="com.atomikos" level="WARN"/>
+    <logger name="org.springframework" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="exceptionMonitorLogAppender"/>
+    </root>
+
+</configuration>

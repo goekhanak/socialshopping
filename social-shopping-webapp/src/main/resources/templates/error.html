@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <title>PET - ERROR</title>
+
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="../../webapp/styles/zalando-bootstrap.css?t=${buildTime}" th:href="@{/styles/zalando-bootstrap.css}"/>
+
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" href="../../webapp/styles/main.css" th:href="@{/styles/main.css}"/>
+    </head>
+    <body>
+
+        <!--/* Static navbar */-->
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" th:href="@{'/'}"> PET</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a th:href="@{'/'}"><span class="glyphicon glyphicon-home"></span></a></li>
+                        <li class="dropdown" th:if="${authentication}">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                                    class="glyphicon glyphicon-user"> <span
+                                    th:text="${#authentication.name}"> User</span> </span><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" th:href="@{/logout}">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="alert alert-danger row text-center">
+                <h3>Oops... Something went wrong!</h3>
+            </div>
+        </div>
+
+        <!--/* Bootstrap core JavaScript                                    */-->
+        <!--/* ==================================================           */-->
+        <!--/* Placed at the end of the document so the pages load faster   */-->
+        <script type="text/javascript" src="../../webapp/bower_components/jquery/dist/jquery.min.js" th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+        <script src="../../webapp/bower_components/angular-bootstrap/ui-bootstrap.min.js" th:src="@{/bower_components/angular-bootstrap/ui-bootstrap.min.js}"></script>
+    </body>
+</html>

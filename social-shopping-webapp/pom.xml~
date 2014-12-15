@@ -1,0 +1,355 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>social-shopping-parent</artifactId>
+        <groupId>de.zalando</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pet-parent/pom.xml</relativePath>
+    </parent>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Social Shoppingl</name>
+    <description>Social Shopping</description>
+    <organization>
+        <name>Zalando/Technology/Backend/Purchasing</name>
+    </organization>
+    <artifactId>social-shopping</artifactId>
+
+
+    <properties>
+        <swagger-springmvc.version>0.8.5</swagger-springmvc.version>
+        <!-- easy cache busting -->
+        <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+        <buildTime>${maven.build.timestamp}</buildTime>
+        <project.build_env.ci_analysis_only>True</project.build_env.ci_analysis_only>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+        </profile>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>0.0.15</version>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v0.10.24</nodeVersion>
+                                    <npmVersion>1.4.6</npmVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>grunt bower install simple</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>bower-install-simple</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>grunt build</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+
+                                <!-- optional: the default phase is "generate-resources" -->
+                                <phase>generate-resources</phase>
+
+                                <configuration>
+                                    <!-- optional: if not specified, it will
+                                        run Grunt's default task (and you can remove this whole <configuration> section.) -->
+                                    <arguments>build</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>javascript tests</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <phase>integration-test</phase>
+                                <configuration>
+                                    <arguments>test:ci</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <!-- > Spring Boot         > -->
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-core-asl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-mapper-asl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <!-- > Metrics             > -->
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-ehcache</artifactId>
+            <version>${codahale-metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-jvm</artifactId>
+            <version>${codahale-metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-servlet</artifactId>
+            <version>${codahale-metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-json</artifactId>
+            <version>${codahale-metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-servlets</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.codahale.metrics</groupId>
+                    <artifactId>metrics-healthchecks</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.ryantenney.metrics</groupId>
+            <artifactId>metrics-spring</artifactId>
+            <version>${metrics-spring.version}</version>
+        </dependency>
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <!-- > Zalando Stuff       > -->
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>purchasing-pet-client</artifactId>
+            <version>15.02-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>purchasing-webapp-commons</artifactId>
+            <version>15.02-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>zomcat</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zalando-domain</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zalando-dbutils</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>zomcat-ws</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>de.zalando</groupId>
+                    <artifactId>zomcat</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zalando-dbutils</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zalando-sprocwrapper</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>user-auth-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>domain-automapper</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zalando-sprocwrapper</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>purchasing-commons</artifactId>
+            <version>15.02-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>velocity</artifactId>
+                    <groupId>org.apache.velocity</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zalando-sprocwrapper</artifactId>
+                    <groupId>de.zalando</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>de.zalando</groupId>
+            <artifactId>zalando-configservice-annotation</artifactId>
+            <version>0.9.6</version>
+        </dependency>
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <!-- > Utils               > -->
+        <!-- >>>>>>>>>>>>>>>>>>>>>>> -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mangofactory</groupId>
+            <artifactId>swagger-springmvc</artifactId>
+            <version>${swagger-springmvc.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <resources>
+            <!-- Turn on filtering by default for application properties -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

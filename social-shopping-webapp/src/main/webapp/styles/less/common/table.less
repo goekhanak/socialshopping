@@ -1,0 +1,141 @@
+@import "../variables";
+@import "../own-variables";
+
+div.table__actions {
+    padding: @padding-small-vertical 0;
+}
+
+table.table {
+    thead {
+        i.active {
+            color: @brand-primary;
+        }
+
+        tr.table__head-title {
+            background-color: @gray-default;
+
+            > th:not(.table__head___checkmark) {
+                cursor: pointer;
+                padding: 0 @padding-xs-horizontal;
+            }
+        }
+
+        .table__head___checkmark {
+            vertical-align: top;
+            padding-left: 15px;
+        }
+        tr.table__head___title {
+            float: left;
+        }
+
+        .table__head___filter {
+            height: 25px;
+            float: right;
+            > i {
+                cursor: pointer;
+                &:hover {
+                    color: @brand-primary;
+                }
+            }
+        }
+
+        td, th {
+            border-right: 1px solid white;
+            &:last-child {
+                border-right: none;
+            }
+        }
+        tr.table__head-search {
+            background-color: @gray-lighter;
+            th {
+                width: auto;
+            }
+            td {
+                input[type="search"] {
+
+                    color: @gray-default;
+                    border: 1px solid @gray-lighter;
+                }
+            }
+        }
+    }
+    tbody {
+        background-color: transparent;
+        > tr {
+            cursor: pointer;
+            &:nth-child( even ) {
+                background-color: @gray-lightest;
+            }
+            &:nth-child( odd ) {
+                background-color: transparent;
+            }
+            &:hover {
+                background-color: @blue-lightest;
+            }
+            &[selected="selected"] {
+                background-color: @blue-lighter;
+                &:hover {
+                    background-color: @blue-lightest;
+                }
+            }
+            &.table__row___sticky {
+                background-color: @orange-lighter;
+                color: @orange-darker;
+            }
+        }
+    }
+
+    tr {
+        transition: @transition-duration-noticeable ease-in-out transform, opacity;
+
+        &.ng-enter {
+            transform: translate( -2000px, 0px );
+            opacity: .8;
+        }
+
+        &.ng-enter-active,
+        &.ng-leave {
+            transform: translate( 0px, 0px );
+            opacity: 1;
+        }
+
+        &.ng-leave-active {
+            transform: translate( 2000px, 0px );
+            opacity: .8;
+        }
+    }
+}
+
+.table__load-more {
+    display: flex;
+    justify-content: center;
+}
+
+div.table__container {
+
+    .table__column___xs {
+        width: 50px;
+        padding-left: 15px;
+    }
+    table.table {
+        table-layout: fixed;
+        margin-bottom: 0;
+        border: none;
+        td, th {
+            vertical-align: middle;
+        }
+    }
+
+    > div.table__body {
+        overflow: auto;
+    }
+
+    .table__head {
+        border: 1px solid @gray-lighter;
+    }
+
+    .table__body {
+        border: 1px solid @gray-lighter;
+        border-top: none;
+    }
+}

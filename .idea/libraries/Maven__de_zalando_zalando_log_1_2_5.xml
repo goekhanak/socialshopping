@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: de.zalando:zalando-log:1.2.5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/zalando/zalando-log/1.2.5/zalando-log-1.2.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/de/zalando/zalando-log/1.2.5/zalando-log-1.2.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/zalando/zalando-log/1.2.5/zalando-log-1.2.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

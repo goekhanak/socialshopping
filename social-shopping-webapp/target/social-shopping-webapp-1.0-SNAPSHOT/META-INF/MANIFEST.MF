@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Implementation-Title: Social Shopping
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: goekhan
+Specification-Vendor: Zalando/Technology/Backend/Purchasing
+Specification-Title: Social Shopping
+Implementation-Vendor-Id: de.zalando
+Implementation-Vendor: Zalando/Technology/Backend/Purchasing
+Main-Class: de.zalando.purchase.pet.SocialShoppingApplication
+Build-Java: 1.8.0_05
+Build-Label: 1.0-SNAPSHOT
+Implementation-Tag: 
+Build-Host: 
+Build-Path: /home/goekhan/reps/socialshopping/social-shopping-webapp
+Implementation-Build: 
+Build-Maven: Maven 3.0.5
+Build-Time: 20141211-1158
+Build-OS: Linux
+Build-User: goekhan
+Created-By: Apache Maven 3.0.5
+Build-Jdk: 1.8.0_05
+Specification-Version: 1.0-SNAPSHOT
+

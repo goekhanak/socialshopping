@@ -1,0 +1,77 @@
+<div class="row fill-parent">
+    <!-- first row -->
+
+    <div class="col-lg-4">
+        <div class="row form-group">
+            <div class="col-lg-6">
+                <label class="control-label pull-right" translate="article.supplierArticleNumber"></label>
+            </div>
+            <div class="col-lg-6">
+                <div readonly
+                     class="form-control">{{config.supplierArticleCode}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-6">
+                <label class="control-label pull-right" translate="article.mainColor"></label>
+            </div>
+            <div class="col-lg-6">
+                <div readonly
+                     class="form-control">{{config.mainColorCode | colorDisplay}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-6">
+                <label class="control-label pull-right" translate="article.secondColor"></label>
+            </div>
+            <div class="col-lg-6">
+                <div readonly
+                     class="form-control">{{config.secondColorCode | colorDisplay}}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row form-group">
+            <div class="col-lg-6">
+                <label class="control-label pull-right" translate="article.thirdColor"></label>
+            </div>
+            <div class="col-lg-6">
+                <div readonly
+                     class="form-control">{{config.thirdColorCode | colorDisplay}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-6">
+                <label class="control-label pull-right" translate="article.mainMaterial"></label>
+            </div>
+            <div class="col-lg-6">
+                <div readonly
+                     class="form-control">{{config.mainMaterialCode | materialDisplay}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-6">
+                <label class="control-label pull-right" translate="article.pattern"></label>
+            </div>
+            <div class="col-lg-6">
+                <div readonly
+                     class="form-control">{{config.patternTypeCode | patternDisplay}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8 fill-height">
+        <div class="container-fluid fill-parent" ng-include="enrichment.editAttrs.template"></div>
+    </div>
+
+</div>
