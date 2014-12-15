@@ -1,9 +1,0 @@
-info:
-    build:
-        artifact: social-shopping-webapp
-        name: Social Shopping
-        description: Social Shopping
-        version: 1.0-SNAPSHOT
-        buildTime: ${maven.build.timestamp}
-ehcache:
-    resourceFileName: ehcache.xml

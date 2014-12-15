@@ -1,8 +1,0 @@
-webService:
-    TranslationReadWebService.url   :  http://z-devsn03.zalando:39305/ws/translationReadWebService?wsdl
-    PurchasingPetWebService.url     :  http://z-devsn02.zalando:35100/ws/purchasingPetWebService?wsdl
-    ConfigReadWebService.url        :  http://z-devsn02.zalando:33600/ws/configReadWebService?wsdl
-    AuthenticationWebService.url    :  http://z-devsn01.zalando:39500/ws/authenticationService?wsdl
-    ArticleReadWebService.url       :  http://z-devsn02.zalando:37001/ws/articleReadWebService?wsdl
-    MasterDataReadWebService.url    :  http://z-devsn02.zalando:37001/ws/masterDataReadWebService?wsdl
-    PurchasingWriteWebService.url   :  http://z-devsn02.zalando:37001/ws/purchasingWriteWebService?wsdl

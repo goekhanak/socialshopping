@@ -1,9 +1,0 @@
-webService:
-    ArticleReadWebService.url     :  http://10.229.12.241:37020/ws/articleReadWebService?wsdl
-    AuthenticationWebService.url  :  http://10.228.116.235:39520/ws/authenticationService?wsdl
-    ConfigReadWebService.url      :  http://10.229.12.245:33620/ws/configReadWebService?wsdl
-    MasterDataReadWebService.url  :  http://10.229.12.241:37020/ws/masterDataReadWebService?wsdl
-    PoolWebService.url            :  http://10.229.12.241:35120/ws/poolWebService?wsdl
-    PurchasingWriteWebService.url :  http://10.229.12.241:37020/ws/purchasingWriteWebService?wsdl
-    PurchasingPetWebService.url   :  http://10.229.12.241:35120/ws/purchasingPetWebService?wsdl
-    TranslationReadWebService.url :  http://10.229.12.241:39325/ws/translationReadWebService?wsdl
