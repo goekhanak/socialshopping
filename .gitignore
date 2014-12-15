@@ -1,0 +1,67 @@
+# used in every project
+target/
+# Eclipse settings files
+.classpath
+.settings
+.project
+.pydevproject
+# IntelliJ IDEA specific files and directories
+.idea/
+*.iml
+atlassian-ide-plugin.xml
+overlays/
+# backup files created by various editors
+*~
+# created by branch script
+/build.log
+/hidden-outputs.log
+# OS folders
+.DS_Store
+
+# config service
+config-service.json
+# event logs
+eventlog.*
+
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log*
+*.rej
+*.swo
+*.swp
+*.zip
+*.vi
+*~
+*.epoch
+*.lck
+testdb*
+.springBeans
+spring_loaded
+node
+node_modules
+.tmp
+.merge_file*
+.sass-cache
+# TODO: why are files under src/main, which should not be committed?
+purchasing-edi-webapp/src/main/webapp/bower_components
+purchasing-edi-webapp/src/main/webapp/dist
+purchasing-edi-webapp/src/main/webapp/styles/*.css*
+
+# database stuff (added by deploy-db-artifacts plugin)
+backend/database/purchase/02_commons/00_externals
+backend/database/purchase/01_utils/00_externals
+backend/database/purchase/zz_processengine/00_externals
+backend/database/purchase/00_setup/00_externals
+backend/database/purchase/00_create_schema_utils/00_externals
+backend/database/purchase/00_bigbang/00_externals
+purchasing-edi-webapp/database/purchase/02_commons/00_externals
+purchasing-edi-webapp/database/purchase/00_setup/00_externals
+purchasing-edi-webapp/database/purchase/01_utils/00_externals
+purchasing-edi-webapp/database/purchase/00_create_schema_utils/00_externals
+purchasing-edi-webapp/database/purchase/zz_processengine/00_externals
+purchasing-edi-webapp/database/puredi/00_create_schema_utils/00_externals
+purchasing-edi-webapp/database/puredi/02_commons/00_externals
+purchasing-edi-webapp/database/puredi/zz_processengine/00_externals
+purchasing-edi-webapp/database/puredi/00_bigbang/00_externals
