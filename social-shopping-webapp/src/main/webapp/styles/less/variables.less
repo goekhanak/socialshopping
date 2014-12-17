@@ -57,6 +57,14 @@
 @brand-danger:          @red-default;
 @brand-info:            @blue-default;
 
+
+// thumbs up down colors
+
+//@thumps-up-color        : #B9DC43;  /*lighter*/
+@thumps-up-color      : #9ACB37;
+@thumbs-down-color    : #CF3638;
+
+
 // Scaffolding
 // -------------------------
 @body-bg:               #fff;
@@ -153,17 +161,26 @@
 @btn-primary-bg:                 @brand-primary;
 @btn-primary-border:             darken(@btn-primary-bg, 5%);
 
+//@btn-success-color:              #fff;
+//@btn-success-bg:                 @brand-success;
+//@btn-success-border:             darken(@btn-success-bg, 5%);
+
 @btn-success-color:              #fff;
-@btn-success-bg:                 @brand-success;
+@btn-success-bg:                 @thumps-up-color;
 @btn-success-border:             darken(@btn-success-bg, 5%);
 
 @btn-warning-color:              #fff;
-@btn-warning-bg:                 @brand-warning;
+@btn-warning-bg:                 @thumbs-down-color;
 @btn-warning-border:             darken(@btn-warning-bg, 5%);
+
+//@btn-danger-color:               #fff;
+//@btn-danger-bg:                  @brand-danger;
+//@btn-danger-border:              darken(@btn-danger-bg, 5%);
 
 @btn-danger-color:               #fff;
 @btn-danger-bg:                  @brand-danger;
 @btn-danger-border:              darken(@btn-danger-bg, 5%);
+
 
 @btn-info-color:                 #fff;
 @btn-info-bg:                    @brand-info;
@@ -694,3 +711,5 @@
 // Large screen / wide desktop
 @container-large-desktop:      ((1250px + @grid-gutter-width));
 @container-lg:                 @container-large-desktop;
+
+

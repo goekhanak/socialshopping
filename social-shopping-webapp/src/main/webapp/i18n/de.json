@@ -300,5 +300,13 @@
         "dropDown": {
             "emptyValue": "Leere Auswahl"
         }
+    },
+    "social":{
+        "search":{
+            "targetGroup":"Fashion für",
+            "category": "Kategorie",
+            "articleName": "Artikel",
+            "addButton": "Mit der Gruppe teilen"
+        }
     }
 }

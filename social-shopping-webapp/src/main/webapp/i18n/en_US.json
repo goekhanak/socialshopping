@@ -310,5 +310,13 @@
         "dropDown": {
             "emptyValue": "Empty Selection"
         }
+    },
+    "social":{
+        "search":{
+            "targetGroup":"Fashion for",
+            "category": "Category",
+            "articleName": "Article Name",
+            "addButton": "Share with Group"
+        }
     }
 }

@@ -65,3 +65,4 @@ purchasing-edi-webapp/database/puredi/00_create_schema_utils/00_externals
 purchasing-edi-webapp/database/puredi/02_commons/00_externals
 purchasing-edi-webapp/database/puredi/zz_processengine/00_externals
 purchasing-edi-webapp/database/puredi/00_bigbang/00_externals
+lib/

@@ -1,53 +1,162 @@
-<div class="full-size" ng-controller="SocialController as ctrl">
+<div class="full-size background-white" ng-controller="SocialController as ctrl">
 
-    <div class="row">
-        <!--Suggestion panel-->
-        <div class="col-lg-3">
-            Suggestion panel
-        </div>
+    <div class="row-layout">
+        <div class="row">
+            <!--Suggestion panel-->
+            <div class="col-lg-3 social-section">
+                <form class="form-horizontal z_search_filter auto-size" bindonce>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label class="control-label pull-right" translate="social.search.targetGroup"></label>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="btn-group dropdown fill-parent">
+                                <button type="button" class="form-control dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        ng-keypress="ctrl.onSearchFilterKeyPress($event)">
+                                    <div class="col-layout">
+                                        <div class="dropdown-display-value">{{ctrl.targetGroup.name}}
+                                        </div>
+                                        <div class="auto-size"><b class="caret"></b></div>
+                                    </div>
+                                </button>
+                                <ul class="dropdown-menu scroll" role="menu">
+                                    <li ng-repeat="targetGroup in ctrl.targetGroups">
+                                        <a ng-click="ctrl.onTargetGroupChange(targetGroup)">{{targetGroup.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label class="control-label pull-right" translate="social.search.category"></label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="ctrl.filterCriteria.category"
+                                   typeahead="category as category.name for category in ctrl.categories | filter:$viewValue | limitTo:8"
+                                   typeahead-min-length="0"
+                                   typeahead-input-formatter="$model.name"
+                                   ng-keypress="ctrl.onSearchFilterKeyPress($event)"
+                                   bindonce/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label class="control-label pull-right" translate="social.search.articleName"></label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="text"
+                                   id="supplierArticleNoSelection"
+                                   class="form-control"
+                                   data-ng-model="ctrl.filterCriteria.articleName"
+                                   ng-keypress="ctrl.onSearchFilterKeyPress($event)"
+                                    >
+                        </div>
+                    </div>
+                </form>
+                <ul class="article-results">
+                    <li ng-repeat="article in ctrl.searchedArticles" class="thumbnail">
+                        <a href="{{article.shopUrl}}" target="_blank" class="thumb"><img
+                                ng-src="{{article.media.images[0].thumbnailUrl}}"></a>
+                        <a href="{{article.shopUrl}}" target="_blank">{{article.brand.name}} - {{article.name}}</a>
 
-        <!--Rate Articles-->
-        <div class="col-lg-6">
-            Participants
-            <li ng-repeat="participant in ctrl.participants">{{ participant|json }}</li>
+                        <p>{{article.units[0].price.formatted}}</p>
 
-            Messages
-            <li ng-repeat="message in ctrl.messages">{{ message|json }}</li>
-        </div>
+                        <button class="btn btn-primary pull-right" type="button"
+                                ng-click="ctrl.addArticle(article)"><i class="fa  fa-share-square-o"></i>
+                            <span class=".divider-small"/></span>
+                            <span translate="social.search.addButton"></span>
+                        </button>
 
-        <!--Chat-->
-        <div class="col-lg-3">
-
-            <!--Show the images of logged in users-->
-            <div class="participants">
-                <!--<div ng-repeat="participant in ctrl.participants" class="participant">-->
-                    <img ng-repeat="participant in ctrl.participants" ng-src="{{participant.profilePicture}}" width="40" title="{{participant.displayName}}">
-                        <!--<span class=".divider-small"/></span>-->
-                        <!--<div class="delimiter"></div>-->
-                    </img>
-                    <div class="delimiter"></div>
-                    <!--<span class=".divider-small"/></span>-->
-                <!--</div>-->
+                    </li>
+                </ul>
             </div>
 
-            <div class="messages">
-                <div ng-repeat="message in ctrl.messages" class="message">
-                    <h4>
-                        <img ng-src="{{message.userImg}}" width="20"/>{{message.content}}
-                    </h4>
+            <!--Rate Articles-->
+            <div class="col-lg-6 social-section">
+                <div class="suggested-articles">
+                    <div ng-repeat="article in ctrl.articles" class="suggested-article">
+                        <a href="{{article.shopUrl}}" target="_blank" class="suggested-thumb pull-left"><img
+                                ng-src="{{article.thumbnailUrl}}"></a>
+
+                        <div class="row">
+                            <div class="col-lg-5">
+
+                                <a href="{{article.shopUrl}}" class="suggested-article-title" target="_blank">{{article.brandName}}
+                                    - {{article.name}}</a>
+
+                                <p>{{article.price}}</p>
+                            </div>
+                            <div class="col-lg-4">
+
+                                <button class="btn btn-success btn-lg" type="button"
+                                        ng-click="ctrl.thumpsUp(article)">
+                                    <span>{{article.thumbsUp.length ?  article.thumbsUp.length : 0}} &nbsp; &nbsp;</span>
+                                    <span class=".divider-medium"></span>
+                                    <i class="fa  fa-thumbs-up"></i>
+                                </button>
+
+                                <span>&nbsp; &nbsp;</span>
+
+                                <button class="btn btn-danger btn-lg" type="button"
+                                        ng-click="ctrl.thumpsDown(article)">
+                                    <span>{{article.thumbsDown.length ? article.thumbsDown.length : '0'}} &nbsp; &nbsp;</span>
+                                    <i class="fa fa-thumbs-down"></i>
+                                </button>
+                            </div>
+
+                            <div class="col-lg-1">
+                                <button class="btn btn-default pull-right" type="button"
+                                        ng-click="ctrl.removeArticle(article)">
+                                    <i class="fa  fa-trash-o "></i>
+                                    <span class=".divider-small"></span>
+                                    <span translate="social.search.removeButton"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Chat-->
+            <div class="col-lg-3 social-section">
+
+                <!--Show the images of logged in users-->
+
+
+                <div class="messages">
+                    <div class="participants">
+                        <!--<div ng-repeat="participant in ctrl.participants" class="participant">-->
+                        <img ng-repeat="participant in ctrl.participants" ng-src="{{participant.profilePicture}}"
+                             width="40"
+                             title="{{participant.displayName}}">
+                        <!--<span class=".divider-small"/></span>-->
+                        <!--<div class="delimiter"></div>-->
+                        </img>
+                        <div class="delimiter"></div>
+                        <!--<span class=".divider-small"/></span>-->
+                        <!--</div>-->
+                    </div>
+                    <div ng-repeat="message in ctrl.messages" class="message">
+                        <h4>
+                            <img ng-src="{{message.userImg}}" width="20"/>{{message.content}}
+                        </h4>
                     <span>{{message.postedBy}}
                       <small class="text-muted">{{message.postedDate | date:'yyyy-MM-dd HH:mm:ss'}}</small>
                     </span>
+                    </div>
+                    <div class="message" ng-show="!ctrl.messages">
+                        <h4>Loading Please wait</h4>
+                    </div>
+                    <div class="message" ng-show="ctrl.messages && ctrl.messages.length == 0">
+                        <h4>No message yet!</h4>
+                    </div>
                 </div>
-                <div class="message" ng-show="!ctrl.messages">
-                    <h4>Loading Please wait</h4>
-                </div>
-                <div class="message" ng-show="ctrl.messages && ctrl.messages.length == 0">
-                    <h4>No message yet!</h4>
-                </div>
-            </div>
 
-            <!--<div class="chat-input">-->
+                <!--<div class="chat-input">-->
                 <input type="text"
                        class="form-control"
                        data-ng-model="ctrl.newMessage"
@@ -55,8 +164,8 @@
                        placeholder="Send Message"
                         />
             </div>
-        <!--</div>-->
+            <!--</div>-->
+        </div>
+
     </div>
-
-
 </div>
