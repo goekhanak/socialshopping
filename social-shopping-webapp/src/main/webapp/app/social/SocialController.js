@@ -132,37 +132,45 @@ define(['socialShoppingModule'], function (module) {
                 }
             }
 
-            function thumpsUp(article){
-                if(!article.thumbsUp){
+            function thumpsUp(article) {
+                if (!article.thumbsUp) {
                     $log.debug('No thumbsUp array exists!');
                     article.thumbsUp = [$rootScope.currentFBUser.id];
-                }else if(article.thumbsUp.indexOf($rootScope.currentFBUser.id) < 0){
+                } else if (article.thumbsUp.indexOf($rootScope.currentFBUser.id) < 0) {
                     article.thumbsUp.push($rootScope.currentFBUser.id);
-                }else{
-                    article.thumbsUp.splice(article.thumbsUp.indexOf($rootScope.currentFBUser.id),1);
+                } else {
+                    article.thumbsUp.splice(article.thumbsUp.indexOf($rootScope.currentFBUser.id), 1);
                 }
 
                 // Remove yourself from thumbsDown if exists
-                if(article.thumbsDown && article.thumbsDown.indexOf($rootScope.currentFBUser.id) > -1){
-                    article.thumbsDown.splice(article.thumbsDown.indexOf($rootScope.currentFBUser.id),1);
+                if (article.thumbsDown && article.thumbsDown.indexOf($rootScope.currentFBUser.id) > -1) {
+                    article.thumbsDown.splice(article.thumbsDown.indexOf($rootScope.currentFBUser.id), 1);
                 }
+
+                self.articles.$save(article);
             }
 
-            function thumpsDown(article){
-                if(!article.thumbsDown){
+            function thumpsDown(article) {
+                if (!article.thumbsDown) {
                     $log.debug('No thumbsDown array exists!');
                     article.thumbsDown = [$rootScope.currentFBUser.id];
-                }else if(article.thumbsDown.indexOf($rootScope.currentFBUser.id) < 0){
+                } else if (article.thumbsDown.indexOf($rootScope.currentFBUser.id) < 0) {
                     article.thumbsDown.push($rootScope.currentFBUser.id);
-                }else{
-                    article.thumbsDown.splice(article.thumbsDown.indexOf($rootScope.currentFBUser.id),1);
+                } else {
+                    article.thumbsDown.splice(article.thumbsDown.indexOf($rootScope.currentFBUser.id), 1);
                 }
 
                 // Remove yourself from thumbsDown if exists
-                if(article.thumbsUp && article.thumbsUp.indexOf($rootScope.currentFBUser.id) > -1){
-                    article.thumbsUp.splice(article.thumbsUp.indexOf($rootScope.currentFBUser.id),1);
+                if (article.thumbsUp && article.thumbsUp.indexOf($rootScope.currentFBUser.id) > -1) {
+                    article.thumbsUp.splice(article.thumbsUp.indexOf($rootScope.currentFBUser.id), 1);
                 }
+
+                self.articles.$save(article);
             }
+
+            $scope.calculateThumbs =  function(article)  {
+                return (article.thumbsDown ? article.thumbsDown.length : 0) - (article.thumbsUp ? article.thumbsUp.length : 0) ;
+            };
 
             function addMessage() {
                 self.messages.$add({
@@ -196,6 +204,7 @@ define(['socialShoppingModule'], function (module) {
             self.removeArticle = removeArticle;
             self.thumpsUp = thumpsUp;
             self.thumpsDown = thumpsDown;
+            //self.calculateThumbs = calculateThumbs;
 
             /*Chat related */
             self.addMessage = addMessage;

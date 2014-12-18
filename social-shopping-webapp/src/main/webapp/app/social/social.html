@@ -78,7 +78,7 @@
             <!--Rate Articles-->
             <div class="col-lg-6 social-section">
                 <div class="suggested-articles">
-                    <div ng-repeat="article in ctrl.articles" class="suggested-article">
+                    <div ng-repeat="article in ctrl.articles | orderBy:[calculateThumbs,'name']" class="suggested-article">
                         <a href="{{article.shopUrl}}" target="_blank" class="suggested-thumb pull-left"><img
                                 ng-src="{{article.thumbnailUrl}}"></a>
 
@@ -87,7 +87,6 @@
 
                                 <a href="{{article.shopUrl}}" class="suggested-article-title" target="_blank">{{article.brandName}}
                                     - {{article.name}}</a>
-
                                 <p>{{article.price}}</p>
                             </div>
                             <div class="col-lg-4">
@@ -113,7 +112,7 @@
                                         ng-click="ctrl.removeArticle(article)">
                                     <i class="fa  fa-trash-o "></i>
                                     <span class=".divider-small"></span>
-                                    <span translate="social.search.removeButton"></span>
+                                    <span></span>
                                 </button>
                             </div>
                         </div>
@@ -142,7 +141,8 @@
                     </div>
                     <div ng-repeat="message in ctrl.messages" class="message">
                         <h4>
-                            <img ng-src="{{message.userImg}}" width="20"/>{{message.content}}
+                            <img ng-src="{{message.userImg}}" width="20"/>
+                            <span class="message-text">{{message.content}}</span>
                         </h4>
                     <span>{{message.postedBy}}
                       <small class="text-muted">{{message.postedDate | date:'yyyy-MM-dd HH:mm:ss'}}</small>

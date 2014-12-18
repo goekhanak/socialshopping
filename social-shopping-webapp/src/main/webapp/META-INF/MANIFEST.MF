@@ -14,7 +14,7 @@ Build-Host:
 Build-Path: /home/goekhan/reps/socialshopping/social-shopping-webapp
 Implementation-Build: 
 Build-Maven: Maven 3.0.5
-Build-Time: 20141216-1627
+Build-Time: 20141218-1054
 Build-OS: Linux
 Build-User: goekhan
 Created-By: Apache Maven 3.0.5
