@@ -4,7 +4,7 @@
         <div class="row">
             <!--Suggestion panel-->
             <div class="col-lg-3 social-section">
-                <form class="form-horizontal z_search_filter auto-size" bindonce>
+                <form class="form-horizontal z_search_filter auto-size round-upper-corners" bindonce>
                     <div class="row">
                         <div class="col-lg-3">
                             <label class="control-label pull-right" translate="social.search.targetGroup"></label>
@@ -84,14 +84,12 @@
                                 ng-src="{{article.thumbnailUrl}}"></a>
 
                         <div class="row">
-                            <div class="col-lg-5">
-
+                            <div class="col-lg-4">
                                 <a href="{{article.shopUrl}}" class="suggested-article-title" target="_blank">{{article.brandName}}
                                     - {{article.name}}</a>
-
                                 <p>{{article.price}}</p>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-5">
                                 <div class="row">
                                     <button class="btn btn-lg"
                                             ng-class="ctrl.articleThumpsUpped(article)? 'btn-info' : 'btn-success' "
@@ -101,9 +99,9 @@
                                         <span class=".divider-medium"></span>
                                         <i class="fa  fa-thumbs-up"></i>
                                     </button>
-
-                                    <span>&nbsp; &nbsp;</span>
-
+                                </div>
+                                <div style="height: 5px"></div>
+                                <div class="row">
                                     <button class="btn  btn-lg"
                                             ng-class="ctrl.articleThumpsDowned(article)? 'btn-danger' : 'btn-warning' "
                                             type="button"
@@ -111,9 +109,9 @@
                                         <span>{{article.thumbsDown ? article.thumbsDown.length : '0'}} &nbsp; &nbsp;</span>
                                         <i class="fa fa-thumbs-down"></i>
                                     </button>
-                                </div>
-                                <div style="height: 5px"></div>
-                                <div class="row">
+
+                                    <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>
+
                                     <button class="btn  btn-lg btn-primary"
                                             type="button"
                                             ng-click="ctrl.toggleExpandComments(article)">
@@ -124,7 +122,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-1">
-                                <button class="btn btn-default pull-right" type="button"
+                                <button class="btn btn-default " type="button"
                                         ng-click="ctrl.removeArticle(article)">
                                     <i class="fa  fa-trash-o "></i>
                                     <span class=".divider-small"></span>
