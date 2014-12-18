@@ -14,6 +14,7 @@ define(['socialShoppingModule'], function (module) {
             var self = this;
 
             self.filterCriteria = {};
+            self.CommentExpanded = {};
 
             function loadMasterData() {
                 self.targetGroups = ShopService.getTargetGroups();
@@ -132,6 +133,22 @@ define(['socialShoppingModule'], function (module) {
                 }
             }
 
+            function articleThumpsUpped(article){
+                if(!article.thumbsUp){
+                    return false;
+                }
+
+                return article.thumbsUp.indexOf($rootScope.currentFBUser.id) > -1;
+            }
+
+            function articleThumpsDowned(article){
+                if(!article.thumbsDown){
+                    return false;
+                }
+
+                return article.thumbsDown.indexOf($rootScope.currentFBUser.id) > -1;
+            }
+
             function thumpsUp(article) {
                 if (!article.thumbsUp) {
                     $log.debug('No thumbsUp array exists!');
@@ -172,6 +189,41 @@ define(['socialShoppingModule'], function (module) {
                 return (article.thumbsDown ? article.thumbsDown.length : 0) - (article.thumbsUp ? article.thumbsUp.length : 0) ;
             };
 
+            function toggleExpandComments(article){
+                if(!self.CommentExpanded[article.id]){
+                    self.CommentExpanded[article.id] = true;
+                }else{
+                    self.CommentExpanded[article.id] = false;
+                }
+            }
+
+            function onCommentKeyPress(article, $event){
+                // when submit is pressed
+                if (13 === $event.keyCode) {
+                    $event.preventDefault();
+                    self.addComment(article);
+                }
+            }
+
+            function addComment(article){
+                if(!article.comments){
+                    article.comments = [];
+                }
+
+                article.comments.push({
+                    content: self.newComment[article.id],
+                    postedBy: $rootScope.currentFBUser.displayName, // get it from facebook login
+                    postedDate: Date.now(),
+                    // userImg: 'images/user.png'
+                    userImg: $rootScope.currentFBUser.profilePicture
+                });
+
+                // synchronize with server
+                self.articles.$save(article);
+
+                self.newComment[article.id] = null;
+            }
+
             function addMessage() {
                 self.messages.$add({
                     content: self.newMessage,
@@ -191,7 +243,6 @@ define(['socialShoppingModule'], function (module) {
                 }
             }
 
-
             self.init = init;
 
             /*Search Articles related */
@@ -204,12 +255,18 @@ define(['socialShoppingModule'], function (module) {
             self.removeArticle = removeArticle;
             self.thumpsUp = thumpsUp;
             self.thumpsDown = thumpsDown;
+            self.articleThumpsUpped = articleThumpsUpped;
+            self.articleThumpsDowned = articleThumpsDowned;
             //self.calculateThumbs = calculateThumbs;
+            self.onCommentKeyPress = onCommentKeyPress;
+            self.addComment = addComment;
 
             /*Chat related */
             self.addMessage = addMessage;
             self.onMessageKeyPress = onMessageKeyPress;
             self.loadMasterData = loadMasterData;
+            self.toggleExpandComments = toggleExpandComments;
+
 
 
             /*functions called*/

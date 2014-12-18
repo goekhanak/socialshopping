@@ -78,7 +78,8 @@
             <!--Rate Articles-->
             <div class="col-lg-6 social-section">
                 <div class="suggested-articles">
-                    <div ng-repeat="article in ctrl.articles | orderBy:[calculateThumbs,'name']" class="suggested-article">
+                    <div ng-repeat="article in ctrl.articles | orderBy:[calculateThumbs,'name']"
+                         class="suggested-article">
                         <a href="{{article.shopUrl}}" target="_blank" class="suggested-thumb pull-left"><img
                                 ng-src="{{article.thumbnailUrl}}"></a>
 
@@ -87,26 +88,41 @@
 
                                 <a href="{{article.shopUrl}}" class="suggested-article-title" target="_blank">{{article.brandName}}
                                     - {{article.name}}</a>
+
                                 <p>{{article.price}}</p>
                             </div>
                             <div class="col-lg-4">
+                                <div class="row">
+                                    <button class="btn btn-lg"
+                                            ng-class="ctrl.articleThumpsUpped(article)? 'btn-info' : 'btn-success' "
+                                            type="button"
+                                            ng-click="ctrl.thumpsUp(article)">
+                                        <span>{{article.thumbsUp ?  article.thumbsUp.length : 0}} &nbsp; &nbsp;</span>
+                                        <span class=".divider-medium"></span>
+                                        <i class="fa  fa-thumbs-up"></i>
+                                    </button>
 
-                                <button class="btn btn-success btn-lg" type="button"
-                                        ng-click="ctrl.thumpsUp(article)">
-                                    <span>{{article.thumbsUp.length ?  article.thumbsUp.length : 0}} &nbsp; &nbsp;</span>
-                                    <span class=".divider-medium"></span>
-                                    <i class="fa  fa-thumbs-up"></i>
-                                </button>
+                                    <span>&nbsp; &nbsp;</span>
 
-                                <span>&nbsp; &nbsp;</span>
-
-                                <button class="btn btn-danger btn-lg" type="button"
-                                        ng-click="ctrl.thumpsDown(article)">
-                                    <span>{{article.thumbsDown.length ? article.thumbsDown.length : '0'}} &nbsp; &nbsp;</span>
-                                    <i class="fa fa-thumbs-down"></i>
-                                </button>
+                                    <button class="btn  btn-lg"
+                                            ng-class="ctrl.articleThumpsDowned(article)? 'btn-danger' : 'btn-warning' "
+                                            type="button"
+                                            ng-click="ctrl.thumpsDown(article)">
+                                        <span>{{article.thumbsDown ? article.thumbsDown.length : '0'}} &nbsp; &nbsp;</span>
+                                        <i class="fa fa-thumbs-down"></i>
+                                    </button>
+                                </div>
+                                <div style="height: 5px"></div>
+                                <div class="row">
+                                    <button class="btn  btn-lg btn-primary"
+                                            type="button"
+                                            ng-click="ctrl.toggleExpandComments(article)">
+                                        <span>{{article.comments ?  article.comments.length : 0}}  &nbsp; &nbsp;</span>
+                                        <span class=".divider-medium"></span>
+                                        <i class="fa  fa-comments-o"></i>
+                                    </button>
+                                </div>
                             </div>
-
                             <div class="col-lg-1">
                                 <button class="btn btn-default pull-right" type="button"
                                         ng-click="ctrl.removeArticle(article)">
@@ -115,6 +131,23 @@
                                     <span></span>
                                 </button>
                             </div>
+                        </div>
+                        <div class="article-comments" collapse="!ctrl.CommentExpanded[article.id]">
+                            <div ng-repeat="comment in article.comments" class="message">
+                                <h4>
+                                    <img ng-src="{{comment.userImg}}" width="20"/>
+                                    <span class="message-text">{{comment.content}}</span>
+                                </h4>
+                                <span>{{message.postedBy}}
+                                    <small class="text-muted">{{comment.postedDate | date:'yyyy-MM-dd HH:mm:ss'}}</small>
+                                </span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   data-ng-model="ctrl.newComment[article.id]"
+                                   ng-keypress="ctrl.onCommentKeyPress(article, $event)"
+                                   placeholder="Post Comment"
+                                    />
                         </div>
                     </div>
                 </div>
