@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="Spring" name="Spring">
+    <facet type="web" name="Web">
       <configuration>
-        <fileset id="fileset2" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/resources/cxf.xml</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/AsyncConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/CacheConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/CxfConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/HeartbeatJspConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/MetricsConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/PetConstants.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/SecurityConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/SwaggerConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/WebConfigurer.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/configservice/ConfigServiceConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/configservice/ToggleConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/config/configservice/UrlConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/de/zalando/purchase/pet/SocialShoppingApplication.java</file>
-        </fileset>
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+        </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
       </configuration>
-    </facet>
-    <facet type="Python" name="Python">
-      <configuration sdkName="" />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
@@ -32,11 +20,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/app" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/bower_components" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Spring-4.1.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:1.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:1.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.1.8.RELEASE" level="project" />
@@ -283,5 +272,6 @@
     <orderEntry type="library" name="Maven: cglib:cglib:2.2" level="project" />
     <orderEntry type="library" name="Maven: com.mangofactory.swagger:swagger-models:0.8.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.0.0" level="project" />
+    <orderEntry type="library" name="social-shopping-webapp node_modules" level="project" />
   </component>
 </module>

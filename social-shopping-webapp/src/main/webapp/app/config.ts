@@ -1,8 +1,10 @@
 /// <reference path='_all.ts' />
+
 require.config({
     optimizeCss: 'none',
     baseUrl: 'app/',
     urlArgs: 't=${buildTime}',
+
     packages: [{
         'name': 'petCommon',
         'location': 'common'
@@ -22,6 +24,7 @@ require.config({
         'name': 'petMetrics',
         'location': 'metrics'
     }],
+
     paths: {
         appTemplates: 'templates/AppTemplates',
         angularTranslate: '../bower_components/angular-translate/angular-translate.min',
@@ -48,6 +51,7 @@ require.config({
         firebase: '../bower_components/firebase/firebase',
         angularfire: '../bower_components/angularfire/dist/angularfire'
     },
+
     shim: {
         appTemplates: {
             deps: ['angular']
@@ -115,4 +119,3 @@ require.config({
         }
     }
 });
-//# sourceMappingURL=config.js.map

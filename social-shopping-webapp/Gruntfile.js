@@ -476,7 +476,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'jshint',
+            //'jshint',
             'html2js',
             'less',
             'concurrent:server',
@@ -499,7 +499,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'jshint',
+        //'jshint',
         'html2js',
         'less',
         'autoprefixer'
