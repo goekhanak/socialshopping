@@ -9,6 +9,10 @@ define('petCommonModule', ['angular', 'uiBootstrap', 'angularTranslate'],
     }
 );
 
+
+
+
+
 define('petCommon', ['petCommonModule',
         './controller/PetController',
 
@@ -30,9 +34,8 @@ define('petCommon', ['petCommonModule',
         './service/ShopService',
         './service/MasterDataService',
         './service/Session',
-        './service/UserService',
+        './service/UserService'
 
-        './service/ShopServiceType'
 
         /*
          Insert any other common components here

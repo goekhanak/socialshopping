@@ -1,296 +1,285 @@
 /// <reference path='../_all.ts' />
 
 
-
-
 define(['socialShoppingModule'], function (socialModule) {
     'use strict';
 
 
-        socialModule.controller('SocialController', ['$scope', '$injector',
-            function ($scope, $injector) {
-                var $firebase = $injector.get('$firebase');
-                var $firebaseAuth = $injector.get('$firebaseAuth');
-                var $log = $injector.get('$log');
-                var cons = $injector.get('cons');
-                var $rootScope = $injector.get('$rootScope');
-                var Firebase = $injector.get('Firebase');
-                var ShopService = $injector.get('ShopService');
+    socialModule.controller('SocialController', ['$scope','$injector',
+        function($scope,$injector){
+            return new social.SocialController($scope, $injector);
+        }
+    ]);
+});
 
-                var self = this;
+module social{
+    export class SocialController{
+        private $firebase;
+        private $firebaseAuth;
+        private $log : ng.ILogService;
+        private cons;
+        private $rootScope;
+        private Firebase ;
+        private shopService: social.ShopService;
 
-                self.filterCriteria = {};
-                self.CommentExpanded = {};
+        filterCriteria: ArticleFilterCriteria;
+        CommentExpanded: Array<String>;
+        targetGroups: Array<TargetGroup>;
+        targetGroup: TargetGroup;
+        categories: Array<Category>;
+        searchedArticles: Array<Article>
+        articles: AngularFireArray;
+        participants: any;
+        messages: any;
+        newMessage: string;
+        newComment: Array<String>;
 
-                function loadMasterData() {
-                    self.targetGroups = ShopService.getTargetGroups();
+        constructor($scope, $injector){
+            this.$firebase = $injector.get('$firebase');
+            this.$firebaseAuth = $injector.get('$firebaseAuth');
+            this.$log = $injector.get('$log');
+            this.cons = $injector.get('cons');
+            this.$rootScope = $injector.get('$rootScope');
+            this.Firebase = $injector.get('Firebase');
+            this.shopService = $injector.get('ShopService');
 
-                    angular.forEach(self.targetGroups, function(targetGroup: petCommon.TargetGroup) {
-                        $log.debug('targetGroup.code: ' + targetGroup.code, + 'targetGroup.name: ' + targetGroup.name);
-                    });
-                }
+            this.CommentExpanded = [];
 
-                function connectToFirebase() {
-                    self.firebaseRef = new Firebase(cons.FIREBASE_BASE_URL);
-                    self.authObj = $firebaseAuth(self.firebaseRef);
+            this.loadMasterData();
+            this.connectToFirebase();
 
-                    self.authObj.$authWithOAuthPopup('facebook').then(function (authData) {
-                        $log.debug('Logged in as:', authData);
+            $scope.calculateThumbs = (article: RatedArticle) =>{
+                return (article.thumbsDown ? article.thumbsDown.length : 0) - (article.thumbsUp ? article.thumbsUp.length : 0);
+            };
 
-
-                        self.messagesRef = self.firebaseRef.child('messages');
-                        self.messagesSync = $firebase(self.messagesRef);
-                        self.messages = self.messagesSync.$asArray();
-
-                        self.participantsRef = self.firebaseRef.child('participants');
-                        self.participantsSync = $firebase(self.participantsRef);
-                        self.participants = self.participantsSync.$asArray();
-
-
-                        var articlesRef = self.firebaseRef.child('articles');
-                        var articlesSync = $firebase(articlesRef);
-                        self.articles = articlesSync.$asArray();
-
-                        self.participants.$loaded(function () {
-                            var userExists = false;
-                            for (var i = 0; i < self.participants.length; i++) {
-                                var participant = self.participants[i];
-                                if (participant.id === $rootScope.currentFBUser.id) {
-                                    userExists = true;
-                                }
-                            }
-
-                            if (userExists === false) {
-                                self.participants.$add($rootScope.currentFBUser);
-                            }
-                        }, function (error) {
-                            $log.error('Error:', error);
-                        });
-
-                        $rootScope.currentFBUser.displayName = authData.facebook.displayName;
-                        $rootScope.currentFBUser.profilePicture = authData.facebook.cachedUserProfile.picture.data.url;
-                        $rootScope.currentFBUser.id = authData.facebook.id;
-
-
-                    }).catch(function (error) {
-                        console.error('Authentication failed:', error);
-                    });
-                }
-
-                function init() {
-                    self.loadMasterData();
-                    connectToFirebase();
-                }
-
-                function onTargetGroupChange(targetGroup) {
-                    self.targetGroup = targetGroup;
-
-                    $log.debug('Target Group selected: ', targetGroup);
-
-                    ShopService.getCategories(targetGroup.code).$promise.then(function (result) {
-                            self.categories = result.content;
-                        },
-                        //error
-                        function (error) {
-                            $log.error('getCategories failed with targetGroup: :', targetGroup);
-                        });
-                }
-
-                function onSearchFilterKeyPress($event) {
-                    // when submit is pressed
-                    if (13 === $event.keyCode) {
-                        $event.preventDefault();
-                        self.searchArticles();
+            $scope.$on('$destroy',  () => {
+                for (var i = 0; i < this.participants.length; i++) {
+                    var participant = this.participants[i];
+                    if (participant.id === this.$rootScope.currentFBUser.id) {
+                        this.participants.$remove(participant);
                     }
                 }
+            });
+        }
 
-                function searchArticles() {
-                    var filter = {
-                        category: self.filterCriteria.category.key,
-                        fullText: self.filterCriteria.articleName
-                    };
+        private connectToFirebase() {
+            var firebaseRef = new Firebase(this.cons.FIREBASE_BASE_URL);
+            var authObj = this.$firebaseAuth(firebaseRef);
 
-                    ShopService.searchArticles(filter).$promise.then(function (result) {
-                            self.searchedArticles = result.content;
-                        },
-                        //error
-                        function (error) {
-                            $log.error('searchArticles failed with filter: :', filter);
-                        }
-                    );
-                }
+            authObj.$authWithOAuthPopup('facebook').then((authData) => {
+                this.$log.debug('Logged in as:', authData);
+
+                var messagesRef = firebaseRef.child('messages');
+                var messagesSync = this.$firebase(messagesRef);
+                this.messages = messagesSync.$asArray();
+
+                var participantsRef = firebaseRef.child('participants');
+                var participantsSync = this.$firebase(participantsRef);
+                this.participants = participantsSync.$asArray();
 
 
-                function addArticle(article) {
-                    self.articles.$add({
-                        id: article.id,
-                        name: article.name,
-                        shopUrl: article.shopUrl,
-                        brandName: article.brand.name,
-                        thumbnailUrl: article.media.images[0].thumbnailUrl,
-                        price: article.units[0].price.formatted,
-                        thumbsUp: [],
-                        thumbsDown: []
-                    });
-                }
+                var articlesRef = firebaseRef.child('articles');
+                var articlesSync = this.$firebase(articlesRef);
+                this.articles = articlesSync.$asArray();
 
-                function removeArticle(articleToRemove) {
-                    for (var i = 0; i < self.articles.length; i++) {
-                        var article = self.articles[i];
-                        if (article.id === articleToRemove.id) {
-                            self.articles.$remove(article);
+                this.participants.$loaded( () => {
+                    var userExists = false;
+                    for (var i = 0; i < this.participants.length; i++) {
+                        var participant = this.participants[i];
+                        if (participant.id === this.$rootScope.currentFBUser.id) {
+                            userExists = true;
                         }
                     }
-                }
 
-                function articleThumpsUpped(article) {
-                    if (!article.thumbsUp) {
-                        return false;
+                    if (userExists === false) {
+                        this.participants.$add(this.$rootScope.currentFBUser);
                     }
-
-                    return article.thumbsUp.indexOf($rootScope.currentFBUser.id) > -1;
-                }
-
-                function articleThumpsDowned(article) {
-                    if (!article.thumbsDown) {
-                        return false;
-                    }
-
-                    return article.thumbsDown.indexOf($rootScope.currentFBUser.id) > -1;
-                }
-
-                function thumpsUp(article) {
-                    if (!article.thumbsUp) {
-                        $log.debug('No thumbsUp array exists!');
-                        article.thumbsUp = [$rootScope.currentFBUser.id];
-                    } else if (article.thumbsUp.indexOf($rootScope.currentFBUser.id) < 0) {
-                        article.thumbsUp.push($rootScope.currentFBUser.id);
-                    } else {
-                        article.thumbsUp.splice(article.thumbsUp.indexOf($rootScope.currentFBUser.id), 1);
-                    }
-
-                    // Remove yourself from thumbsDown if exists
-                    if (article.thumbsDown && article.thumbsDown.indexOf($rootScope.currentFBUser.id) > -1) {
-                        article.thumbsDown.splice(article.thumbsDown.indexOf($rootScope.currentFBUser.id), 1);
-                    }
-
-                    self.articles.$save(article);
-                }
-
-                function thumpsDown(article) {
-                    if (!article.thumbsDown) {
-                        $log.debug('No thumbsDown array exists!');
-                        article.thumbsDown = [$rootScope.currentFBUser.id];
-                    } else if (article.thumbsDown.indexOf($rootScope.currentFBUser.id) < 0) {
-                        article.thumbsDown.push($rootScope.currentFBUser.id);
-                    } else {
-                        article.thumbsDown.splice(article.thumbsDown.indexOf($rootScope.currentFBUser.id), 1);
-                    }
-
-                    // Remove yourself from thumbsDown if exists
-                    if (article.thumbsUp && article.thumbsUp.indexOf($rootScope.currentFBUser.id) > -1) {
-                        article.thumbsUp.splice(article.thumbsUp.indexOf($rootScope.currentFBUser.id), 1);
-                    }
-
-                    self.articles.$save(article);
-                }
-
-                $scope.calculateThumbs = function (article) {
-                    return (article.thumbsDown ? article.thumbsDown.length : 0) - (article.thumbsUp ? article.thumbsUp.length : 0);
-                };
-
-                function toggleExpandComments(article) {
-                    if (!self.CommentExpanded[article.id]) {
-                        self.CommentExpanded[article.id] = true;
-                    } else {
-                        self.CommentExpanded[article.id] = false;
-                    }
-                }
-
-                function onCommentKeyPress(article, $event) {
-                    // when submit is pressed
-                    if (13 === $event.keyCode) {
-                        $event.preventDefault();
-                        self.addComment(article);
-                    }
-                }
-
-                function addComment(article) {
-                    if (!article.comments) {
-                        article.comments = [];
-                    }
-
-                    article.comments.push({
-                        content: self.newComment[article.id],
-                        postedBy: $rootScope.currentFBUser.displayName, // get it from facebook login
-                        postedDate: Date.now(),
-                        // userImg: 'images/user.png'
-                        userImg: $rootScope.currentFBUser.profilePicture
-                    });
-
-                    // synchronize with server
-                    self.articles.$save(article);
-
-                    self.newComment[article.id] = null;
-                }
-
-                function addMessage() {
-                    self.messages.$add({
-                        content: self.newMessage,
-                        postedBy: $rootScope.currentFBUser.displayName, // get it from facebook login
-                        postedDate: Date.now(),
-                        // userImg: 'images/user.png'
-                        userImg: $rootScope.currentFBUser.profilePicture
-                    });
-                    self.newMessage = null;
-                }
-
-                function onMessageKeyPress($event) {
-                    // when submit is pressed
-                    if (13 === $event.keyCode) {
-                        $event.preventDefault();
-                        self.addMessage();
-                    }
-                }
-
-                self.init = init;
-
-                /*Search Articles related */
-                self.onTargetGroupChange = onTargetGroupChange;
-                self.onSearchFilterKeyPress = onSearchFilterKeyPress;
-                self.searchArticles = searchArticles;
-
-                /*rate articles related*/
-                self.addArticle = addArticle;
-                self.removeArticle = removeArticle;
-                self.thumpsUp = thumpsUp;
-                self.thumpsDown = thumpsDown;
-                self.articleThumpsUpped = articleThumpsUpped;
-                self.articleThumpsDowned = articleThumpsDowned;
-                //self.calculateThumbs = calculateThumbs;
-                self.onCommentKeyPress = onCommentKeyPress;
-                self.addComment = addComment;
-
-                /*Chat related */
-                self.addMessage = addMessage;
-                self.onMessageKeyPress = onMessageKeyPress;
-                self.loadMasterData = loadMasterData;
-                self.toggleExpandComments = toggleExpandComments;
-
-
-                /*functions called*/
-                self.init();
-
-
-                $scope.$on('$destroy', function handler() {
-                    for (var i = 0; i < self.participants.length; i++) {
-                        var participant = self.participants[i];
-                        if (participant.id === $rootScope.currentFBUser.id) {
-                            self.participants.$remove(participant);
-                        }
-                    }
+                },  (error) => {
+                    this.$log.error('Error:', error);
                 });
 
+                this.$rootScope.currentFBUser.displayName = authData.facebook.displayName;
+                this.$rootScope.currentFBUser.profilePicture = authData.facebook.cachedUserProfile.picture.data.url;
+                this.$rootScope.currentFBUser.id = authData.facebook.id;
+            }).catch((error) =>{
+                console.error('Authentication failed:', error);
+            });
+        }
+
+        private loadMasterData() {
+            this.targetGroups = this.shopService.getTargetGroups();
+
+            angular.forEach(this.targetGroups, (targetGroup: social.TargetGroup) => {
+                this.$log.debug('targetGroup.code: ' + targetGroup.code, + 'targetGroup.name: ' + targetGroup.name);
+            });
+        }
+
+        onTargetGroupChange(targetGroup) {
+            this.targetGroup = targetGroup;
+
+            this.$log.debug('Target Group selected: ', targetGroup);
+
+            this.shopService.getCategories(targetGroup.code).$promise.then( (result) => {
+                this.categories = result.content;
+            },
+            //error
+            function (error) {
+                this.$log.error('getCategories failed with targetGroup: :', targetGroup);
+            });
+        }
+
+
+        onSearchFilterKeyPress($event) {
+            // when submit is pressed
+            if (13 === $event.keyCode) {
+                $event.preventDefault();
+                this.searchArticles();
             }
-        ]);
-});
+        }
+
+        searchArticles() {
+            var filter = {
+                category: this.filterCriteria.category.key,
+                fullText: this.filterCriteria.articleName
+            };
+
+            this.shopService.searchArticles(filter).$promise.then((result:social.ArticleSearchResult) => {
+                    this.searchedArticles = result.content;
+                },
+                //error
+                (error) => {
+                    this.$log.error('searchArticles failed with filter: :', filter);
+                }
+            );
+        }
+
+        addArticle(article: Article) {
+            this.articles.$add({
+                id: article.id,
+                name: article.name,
+                shopUrl: article.shopUrl,
+                brandName: article.brand.name,
+                thumbnailUrl: article.media.images[0].smallUrl,
+                price: article.units[0].price.formatted,
+                thumbsUp: [],
+                thumbsDown: []
+            });
+        }
+
+        removeArticle(articleToRemove) {
+            for (var i = 0; i < this.articles.length; i++) {
+                var article = this.articles[i] ;
+                if (article.$id === articleToRemove.$id) {
+                    this.articles.$remove(article);
+                }
+            }
+        }
+
+        articleThumpsUpped(article: RatedArticle) {
+            if (!article.thumbsUp) {
+                return false;
+            }
+
+            return article.thumbsUp.indexOf(this.$rootScope.currentFBUser.id) > -1;
+        }
+
+        articleThumpsDowned(article : RatedArticle) {
+            if (!article.thumbsDown) {
+                return false;
+            }
+
+            return article.thumbsDown.indexOf(this.$rootScope.currentFBUser.id) > -1;
+        }
+
+        thumpsUp(article: RatedArticle) {
+            if (!article.thumbsUp) {
+                this.$log.debug('No thumbsUp array exists!');
+                article.thumbsUp = [this.$rootScope.currentFBUser.id];
+            } else if (article.thumbsUp.indexOf(this.$rootScope.currentFBUser.id) < 0) {
+                article.thumbsUp.push(this.$rootScope.currentFBUser.id);
+            } else {
+                article.thumbsUp.splice(article.thumbsUp.indexOf(this.$rootScope.currentFBUser.id), 1);
+            }
+
+            // Remove yourself from thumbsDown if exists
+            if (article.thumbsDown && article.thumbsDown.indexOf(this.$rootScope.currentFBUser.id) > -1) {
+                article.thumbsDown.splice(article.thumbsDown.indexOf(this.$rootScope.currentFBUser.id), 1);
+            }
+
+            this.articles.$save(article);
+        }
+
+        thumpsDown(article : RatedArticle) {
+            if (!article.thumbsDown) {
+                this.$log.debug('No thumbsDown array exists!');
+                article.thumbsDown = [this.$rootScope.currentFBUser.id];
+            } else if (article.thumbsDown.indexOf(this.$rootScope.currentFBUser.id) < 0) {
+                article.thumbsDown.push(this.$rootScope.currentFBUser.id);
+            } else {
+                article.thumbsDown.splice(article.thumbsDown.indexOf(this.$rootScope.currentFBUser.id), 1);
+            }
+
+            // Remove yourself from thumbsDown if exists
+            if (article.thumbsUp && article.thumbsUp.indexOf(this.$rootScope.currentFBUser.id) > -1) {
+                article.thumbsUp.splice(article.thumbsUp.indexOf(this.$rootScope.currentFBUser.id), 1);
+            }
+
+            this.articles.$save(article);
+        }
+
+
+
+        toggleExpandComments(article:RatedArticle) {
+            if (!this.CommentExpanded[article.id]) {
+                this.CommentExpanded[article.id] = true;
+            } else {
+                this.CommentExpanded[article.id] = false;
+            }
+        }
+
+        onCommentKeyPress(article: RatedArticle, $event) {
+            // when submit is pressed
+            if (13 === $event.keyCode) {
+                $event.preventDefault();
+                this.addComment(article);
+            }
+        }
+
+        addComment(article: RatedArticle) {
+            if (!article.comments) {
+                article.comments = [];
+            }
+
+            article.comments.push({
+                content: this.newComment[article.id],
+                postedBy: this.$rootScope.currentFBUser.displayName, // get it from facebook login
+                postedDate: Date.now(),
+                userImg: this.$rootScope.currentFBUser.profilePicture
+            });
+
+            // synchronize with server
+            this.articles.$save(article);
+            this.newComment[article.id] = null;
+        }
+
+        addMessage() {
+            this.messages.$add({
+                content: this.newMessage,
+                postedBy: this.$rootScope.currentFBUser.displayName, // get it from facebook login
+                postedDate: Date.now(),
+                userImg: this.$rootScope.currentFBUser.profilePicture
+            });
+            this.newMessage = null;
+        }
+
+        onMessageKeyPress($event) {
+            // when submit is pressed
+            if (13 === $event.keyCode) {
+                $event.preventDefault();
+                this.addMessage();
+            }
+        }
+
+
+    }
+}

@@ -2,9 +2,8 @@
 
 'use strict';
 
-module petCommon {
-
-    export  class TargetGroup {
+module social {
+    export class TargetGroup {
         code:string;
         name:string;
 
@@ -14,5 +13,4 @@ module petCommon {
         }
     }
 }
-
 

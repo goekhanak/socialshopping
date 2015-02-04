@@ -1,17 +1,20 @@
 /// <reference path='../../_all.ts' />
 define(['petCommonModule'], function (module) {
     'use strict';
-    module.factory('ShopService', ['$injector', 
-    //function($injector){
-    //    new petCommon.ShopServiceType($injector);
-    //}
-    function ($injector) {
-        var $resource = $injector.get('$resource');
-        var SHOP_API_URL = 'https://api.zalando.com/';
-        var self = this;
-        self.cachedAttributeDefinitions = {};
-        function searchArticles(searchRequest) {
-            var connection = $resource(SHOP_API_URL + 'articles', {}, {
+    module.factory('ShopService', ['$injector', function ($injector) {
+        return new social.ShopService($injector);
+    }]);
+});
+var social;
+(function (social) {
+    var ShopService = (function () {
+        function ShopService($injector) {
+            this.$injector = $injector;
+            this.SHOP_API_URL = 'https://api.zalando.com/';
+            this.$resource = $injector.get('$resource');
+        }
+        ShopService.prototype.searchArticles = function (searchRequest) {
+            var connection = this.$resource(this.SHOP_API_URL + 'articles', {}, {
                 query: {
                     method: 'GET',
                     isArray: false,
@@ -19,30 +22,24 @@ define(['petCommonModule'], function (module) {
                 }
             });
             return connection.query(searchRequest);
-        }
-        function getTargetGroups() {
-            return [{
+        };
+        ShopService.prototype.getTargetGroups = function () {
+            var targetGroups = new Array();
+            targetGroups.push({
                 code: 'women',
                 name: 'Women'
-            }, {
+            });
+            targetGroups.push({
                 code: 'men',
                 name: 'Men'
-            }, {
+            });
+            targetGroups.push({
                 code: 'kids',
                 name: 'Kids'
-            }];
-        }
-        function getCategoriesTry(targetGroupCode) {
-            var connection = $resource(SHOP_API_URL + 'categories/' + targetGroupCode, {}, {
-                query: {
-                    method: 'GET',
-                    isArray: false,
-                    cache: true
-                }
             });
-            return connection.query();
-        }
-        function getCategories(targetGroupCode) {
+            return targetGroups;
+        };
+        ShopService.prototype.getCategories = function (targetGroupCode) {
             var filter = {
                 targetGroup: targetGroupCode,
                 hidden: false,
@@ -50,7 +47,7 @@ define(['petCommonModule'], function (module) {
                 //parentKey: targetGroupCode,
                 pageSize: 999
             };
-            var connection = $resource(SHOP_API_URL + 'categories', {}, {
+            var connection = this.$resource(this.SHOP_API_URL + 'categories', {}, {
                 query: {
                     method: 'GET',
                     isArray: false,
@@ -58,11 +55,9 @@ define(['petCommonModule'], function (module) {
                 }
             });
             return connection.query(filter);
-        }
-        self.searchArticles = searchArticles;
-        self.getTargetGroups = getTargetGroups;
-        self.getCategories = getCategories;
-        return self;
-    }]);
-});
+        };
+        return ShopService;
+    })();
+    social.ShopService = ShopService;
+})(social || (social = {}));
 //# sourceMappingURL=ShopService.js.map

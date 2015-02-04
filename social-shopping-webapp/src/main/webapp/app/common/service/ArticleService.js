@@ -15,8 +15,8 @@ define(['petCommonModule'], function (module) {
                     var connection = $resource(ARTICLE_URL , {}, {
                         query: {
                             method: 'GET',
-                            isArray: true,
-                            transformResponse: BackendPagination.getContent
+                            isArray: true
+                            //transformResponse: BackendPagination.getContent
                         }
                     });
 

@@ -1,7 +1,7 @@
 /// <reference path='../../_all.ts' />
 'use strict';
-var petCommon;
-(function (petCommon) {
+var social;
+(function (social) {
     var TargetGroup = (function () {
         function TargetGroup(code, name) {
             this.code = code;
@@ -9,6 +9,6 @@ var petCommon;
         }
         return TargetGroup;
     })();
-    petCommon.TargetGroup = TargetGroup;
-})(petCommon || (petCommon = {}));
+    social.TargetGroup = TargetGroup;
+})(social || (social = {}));
 //# sourceMappingURL=TargetGroup.js.map
