@@ -57,7 +57,9 @@
     "nopt": "~2.1.2",
     "protractor": "~0.21.0",
     "requirejs": "~2.1.10",
-    "time-grunt": "0.2.7"
+    "time-grunt": "0.2.7",
+    "typescript": "~1.4.1",
+    "grunt-typescript": "~0.6.1"
   },
   "engines": {
     "node": ">=0.8.0"

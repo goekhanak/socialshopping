@@ -18,8 +18,24 @@ module.exports = function (grunt) {
     grunt.renameTask('watch', 'delta');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.renameTask('watch', 'deltaTests');
+    grunt.loadNpmTasks('grunt-typescript');
 
     grunt.initConfig({
+
+        typescript: {
+            base: {
+                src: ['<%= appConfig.appPath %>/**/*.ts'],
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    //basePath: '<%= appConfig.appPath %>',
+                    sourceMap: true,
+                    declaration: false,
+                    removeComments: false
+                }
+            }
+        },
+
         appConfig: {
             // configurable paths
             appPath: require('./bower.json').appPath || './src/main/webapp/app',
@@ -499,6 +515,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'typescript',
         //'jshint',
         'html2js',
         'less',
