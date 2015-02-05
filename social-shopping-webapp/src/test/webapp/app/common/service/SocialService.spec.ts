@@ -22,7 +22,7 @@ define(['angular', 'angularMocks', 'petCommon'], function () {
 
         describe('getTargetGroups', function () {
             it('should return an array with 3 target groups', inject(function () {
-                var targetGroups = servi
+                var targetGroups = service.getTargetGroups();
                 expect(targetGroups).toBeDefined();
                 expect(targetGroups.length).toEqual(3);
             }));
