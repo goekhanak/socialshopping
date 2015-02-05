@@ -22,6 +22,16 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
 
+        appConfig: {
+            // configurable paths
+            appPath: require('./bower.json').appPath || './src/main/webapp/app',
+            karmaPath: 'target/karma-resources/',
+            stylesPath: './src/main/webapp/styles',
+            imagesPath: './src/main/webapp/images',
+            i18nPath: './src/main/webapp/i18n',
+            dist: 'src/main/webapp/dist',
+            testsPath: './src/test/webapp/'
+        },
         typescript: {
             base: {
                 src: ['<%= appConfig.appPath %>/**/*.ts'],
@@ -33,17 +43,18 @@ module.exports = function (grunt) {
                     declaration: false,
                     removeComments: false
                 }
+            },
+            test: {
+                src: ['<%= appConfig.testsPath %>/**/*.ts'],
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    //basePath: '<%= appConfig.appPath %>',
+                    sourceMap: true,
+                    declaration: false,
+                    removeComments: false
+                }
             }
-        },
-
-        appConfig: {
-            // configurable paths
-            appPath: require('./bower.json').appPath || './src/main/webapp/app',
-            karmaPath: 'target/karma-resources/',
-            stylesPath: './src/main/webapp/styles',
-            imagesPath: './src/main/webapp/images',
-            i18nPath: './src/main/webapp/i18n',
-            dist: 'src/main/webapp/dist'
         },
         delta: {
             less: {
@@ -492,6 +503,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'typescript',
             //'jshint',
             'html2js',
             'less',
@@ -554,6 +566,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test:ci', [
         'clean:server',
         'concurrent:test',
+        'typescript',
         'autoprefixer',
         'copy:tests',
         'karma:ci:start'
@@ -564,6 +577,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test:dev', [
         'clean:server',
         'concurrent:test',
+        'typescript',
         'autoprefixer',
         'copy:tests',
         'karma:unit:start',
