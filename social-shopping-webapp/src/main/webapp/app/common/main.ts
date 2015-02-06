@@ -31,7 +31,6 @@ define('petCommon', ['petCommonModule',
 
         './service/AuthenticationSharedService',
         './service/ArticleService',
-        './service/ShopService',
         './service/MasterDataService',
         './service/Session',
         './service/UserService'

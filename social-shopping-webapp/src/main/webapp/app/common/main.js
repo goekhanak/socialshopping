@@ -3,7 +3,7 @@ define('petCommonModule', ['angular', 'uiBootstrap', 'angularTranslate'], functi
     'use strict';
     return angular.module('petCommon', ['ui.bootstrap', 'pascalprecht.translate']);
 });
-define('petCommon', ['petCommonModule', './controller/PetController', './directive/table/table', './directive/datepicker/DatePicker', './filter/MasterDataFilter', './filter/ParseFilter', './filter/FormatterFilter', './helper/AttributeDefinition', './helper/BackendPagination', './helper/Scope', './provider/lodashProvider', './service/AuthenticationSharedService', './service/ArticleService', './service/ShopService', './service/MasterDataService', './service/Session', './service/UserService'], function (module) {
+define('petCommon', ['petCommonModule', './controller/PetController', './directive/table/table', './directive/datepicker/DatePicker', './filter/MasterDataFilter', './filter/ParseFilter', './filter/FormatterFilter', './helper/AttributeDefinition', './helper/BackendPagination', './helper/Scope', './provider/lodashProvider', './service/AuthenticationSharedService', './service/ArticleService', './service/MasterDataService', './service/Session', './service/UserService'], function (module) {
     'use strict';
     module.constant('cons', {
         'REST_BASE_URL': 'rest',

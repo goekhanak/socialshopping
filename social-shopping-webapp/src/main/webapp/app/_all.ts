@@ -4,11 +4,11 @@
 /// <reference path='../bower_components/DefinitelyTyped/angularfire/angularfire.d.ts'/>
 
 /// <reference path='../app/config.ts' />
-/// <reference path='../app/common/model/TargetGroup.ts' />
-/// <reference path='../app/common/model/Category.ts' />
-/// <reference path='../app/common/model/Article.ts' />
-/// <reference path='../app/common/service/ShopService.ts' />
-/// <reference path='../app/social/SocialController.ts' />
+/// <reference path='social/model/TargetGroup.ts' />
+/// <reference path='social/model/Category.ts' />
+/// <reference path='social/model/Article.ts' />
+/// <reference path='social/service/ShopService.ts' />
+/// <reference path='social/controller/SocialController.ts' />
 
 
 

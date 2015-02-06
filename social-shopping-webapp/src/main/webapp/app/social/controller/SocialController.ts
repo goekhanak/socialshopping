@@ -1,4 +1,4 @@
-/// <reference path='../_all.ts' />
+/// <reference path='../../_all.ts' />
 
 
 define(['socialShoppingModule'], function (socialModule) {
@@ -76,7 +76,6 @@ module social{
                 var participantsRef = firebaseRef.child('participants');
                 var participantsSync = this.$firebase(participantsRef);
                 this.participants = participantsSync.$asArray();
-
 
                 var articlesRef = firebaseRef.child('articles');
                 var articlesSync = this.$firebase(articlesRef);

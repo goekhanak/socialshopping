@@ -1,59 +1,45 @@
 /// <reference path='../../_all.ts' />
-
-define(['petCommonModule'], function (module) {
+define(['socialShoppingModule'], function (module) {
     'use strict';
-
-    module.factory('ShopService', ['$injector',
-
-        function($injector){
-            return new social.ShopService($injector);
-        }
-    ]);
+    module.factory('ShopService', ['$injector', function ($injector) {
+        return new social.ShopService($injector);
+    }]);
 });
-
-module social {
-    export class ShopService {
-        private $resource: ng.resource.IResourceService;
-        private SHOP_API_URL: string = 'https://api.zalando.com/';
-
-        constructor(private $injector) {
+var social;
+(function (social) {
+    var ShopService = (function () {
+        function ShopService($injector) {
+            this.$injector = $injector;
+            this.SHOP_API_URL = 'https://api.zalando.com/';
             this.$resource = $injector.get('$resource');
         }
-
-        searchArticles(searchRequest): social.ArticleSearchResult {
-            var connection:any = this.$resource(this.SHOP_API_URL + 'articles', {}, {
+        ShopService.prototype.searchArticles = function (searchRequest) {
+            var connection = this.$resource(this.SHOP_API_URL + 'articles', {}, {
                 query: {
                     method: 'GET',
                     isArray: false,
                     cache: true
                 }
             });
-
             return connection.query(searchRequest);
-        }
-
-        getTargetGroups():Array<social.TargetGroup> {
-            var targetGroups:Array<social.TargetGroup> = new Array<social.TargetGroup>();
-
+        };
+        ShopService.prototype.getTargetGroups = function () {
+            var targetGroups = new Array();
             targetGroups.push({
                 code: 'women',
                 name: 'Women'
             });
-
             targetGroups.push({
                 code: 'men',
                 name: 'Men'
             });
-
             targetGroups.push({
                 code: 'kids',
                 name: 'Kids'
             });
-
             return targetGroups;
-        }
-
-        getCategories(targetGroupCode): social.CategorySearchResult {
+        };
+        ShopService.prototype.getCategories = function (targetGroupCode) {
             var filter = {
                 targetGroup: targetGroupCode,
                 hidden: false,
@@ -61,9 +47,7 @@ module social {
                 //parentKey: targetGroupCode,
                 pageSize: 999
             };
-
-
-            var connection:any = this.$resource(this.SHOP_API_URL + 'categories', {}, {
+            var connection = this.$resource(this.SHOP_API_URL + 'categories', {}, {
                 query: {
                     method: 'GET',
                     isArray: false,
@@ -71,6 +55,9 @@ module social {
                 }
             });
             return connection.query(filter);
-        }
-    }
-}
+        };
+        return ShopService;
+    })();
+    social.ShopService = ShopService;
+})(social || (social = {}));
+//# sourceMappingURL=ShopService.js.map

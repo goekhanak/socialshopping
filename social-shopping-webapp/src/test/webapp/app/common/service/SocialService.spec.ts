@@ -3,17 +3,18 @@
 
 'use strict';
 
-define(['angular', 'angularMocks', 'petCommon'], function () {
+define(['angular', 'angularMocks', 'socialShopping'], function () {
     describe('Shop Service: ', function () {
         var service: social.ShopService;
 
         beforeEach(function () {
-            module('petCommon');
+            module('socialShopping');
             module('ngResource');
             inject(function ($injector) {
                 service = $injector.get('ShopService');
             });
         });
+
 
         it('should load stuff', function () {
                 expect(service).toBeDefined();

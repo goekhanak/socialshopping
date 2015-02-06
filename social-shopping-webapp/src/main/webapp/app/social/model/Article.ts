@@ -66,3 +66,4 @@ module social{
         articleName : string;
     }
 }
+

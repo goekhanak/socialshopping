@@ -2,17 +2,7 @@
 /// <amd-dependency path="angular"/>
 
 
-//export module socialShoppingModule{
-//    var angular:ng.IAngularStatic = require('angular');
-//    var petCommon = require('../common/main');
-//
-//    export function run() {
-//        return angular.module('socialShopping', ['petCommon']);
-//    }
-//}
-
-
-define('socialShoppingModule', ['angular', 'petCommon'],
+define('socialShoppingModule', ['angular', 'socialShoppingModule'],
     function (angular : ng.IAngularStatic) {
         'use strict';
 
@@ -22,7 +12,8 @@ define('socialShoppingModule', ['angular', 'petCommon'],
 );
 
 define('socialShopping', ['socialShoppingModule',
-        './SocialController'
+        './service/ShopService',
+        './controller/SocialController'
     ],
     function (module) {
         'use strict';
