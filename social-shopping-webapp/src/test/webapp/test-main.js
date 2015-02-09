@@ -9,14 +9,15 @@ define('config', [], function () {
             {
                 name: 'petCommon',
                 location: 'common'
-            },
-            {
+            }, {
                 name: 'petStart',
                 location: 'start'
-            },
-            {
+            }, {
                 name: 'petEnrichment',
                 location: 'enrichment'
+            }, {
+                'name': 'socialShopping',
+                'location': 'social'
             }
         ],
 

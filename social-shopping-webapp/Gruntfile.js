@@ -18,8 +18,10 @@ module.exports = function (grunt) {
     grunt.renameTask('watch', 'delta');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.renameTask('watch', 'deltaTests');
+    grunt.loadNpmTasks('grunt-typescript');
 
     grunt.initConfig({
+
         appConfig: {
             // configurable paths
             appPath: require('./bower.json').appPath || './src/main/webapp/app',
@@ -27,7 +29,32 @@ module.exports = function (grunt) {
             stylesPath: './src/main/webapp/styles',
             imagesPath: './src/main/webapp/images',
             i18nPath: './src/main/webapp/i18n',
-            dist: 'src/main/webapp/dist'
+            dist: 'src/main/webapp/dist',
+            testsPath: './src/test/webapp/'
+        },
+        typescript: {
+            base: {
+                src: ['<%= appConfig.appPath %>/**/*.ts'],
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    //basePath: '<%= appConfig.appPath %>',
+                    sourceMap: true,
+                    declaration: false,
+                    removeComments: false
+                }
+            },
+            test: {
+                src: ['<%= appConfig.testsPath %>/**/*.ts'],
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    //basePath: '<%= appConfig.appPath %>',
+                    sourceMap: true,
+                    declaration: false,
+                    removeComments: false
+                }
+            }
         },
         delta: {
             less: {
@@ -476,7 +503,8 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'jshint',
+            'typescript',
+            //'jshint',
             'html2js',
             'less',
             'concurrent:server',
@@ -499,7 +527,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'jshint',
+        'typescript',
+        //'jshint',
         'html2js',
         'less',
         'autoprefixer'
@@ -537,6 +566,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test:ci', [
         'clean:server',
         'concurrent:test',
+        'typescript',
         'autoprefixer',
         'copy:tests',
         'karma:ci:start'
@@ -547,6 +577,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test:dev', [
         'clean:server',
         'concurrent:test',
+        'typescript',
         'autoprefixer',
         'copy:tests',
         'karma:unit:start',
